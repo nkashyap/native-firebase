@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 /node_modules/
-/.idea/
+/.idea
 /packages/**/android/build/
+/packages/**/android/gen/
 /packages/**/local.properties
