@@ -1,0 +1,23 @@
+{
+  "name": "native-firebase",
+  "version": "1.0.0",
+  "description": "React Native Firebase Library",
+  "main": "index.js",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nkashyap/native-firebase.git"
+  },
+  "author": "Nisheeth Kashyap",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nkashyap/native-firebase/issues"
+  },
+  "homepage": "https://github.com/nkashyap/native-firebase#readme",
+  "devDependencies": {
+    "lerna": "2.0.0-beta.37"
+  }
+}

@@ -1,0 +1,12 @@
+rootProject.name = 'quickstart'
+
+include ':native-firebase-helpers'
+project(':native-firebase-helpers').projectDir = new File(rootProject.projectDir, '../../helpers/android')
+
+include ':native-firebase-core'
+project(':native-firebase-core').projectDir = new File(rootProject.projectDir, '../../core/android')
+
+include ':native-firebase-config'
+project(':native-firebase-config').projectDir = new File(rootProject.projectDir, '../../config/android')
+
+include ':app'

@@ -1,2 +1,2 @@
 # native-firebase
-Firebase react-native implementation
+Firebase react-native library

@@ -1,0 +1,9 @@
+{
+  "name": "@native-firebase/config",
+  "version": "0.0.1",
+  "main": "index.js",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  }
+}
