@@ -1,5 +1,6 @@
 package co.happywallet.firebase;
 
+import android.util.Log;
 import co.happywallet.firebase.helpers.StringHelper;
 
 import java.util.Map;
@@ -19,15 +20,21 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
-//@SuppressWarnings("WeakerAccess")
 public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
   LifecycleEventListener {
   private static final String TAG = "FirebaseCore";
-  private FirebaseApp app;
+  private String AppName;
 
   public FirebaseCoreModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    app = FirebaseApp.getInstance();
+  }
+
+  private FirebaseApp getInstance() {
+    if (!StringHelper.isEmpty(AppName)) {
+      return FirebaseApp.getInstance(AppName);
+    } else {
+      return FirebaseApp.getInstance();
+    }
   }
 
   private String getValue(final ReadableMap params, final String key, final String defaultValue) {
@@ -103,9 +110,10 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
 
       if (!options.equals(newOptions)) {
         if (StringHelper.isEmpty(name)) {
-          app = FirebaseApp.initializeApp(context, newOptions);
+          FirebaseApp.initializeApp(context, newOptions);
         } else {
-          app = FirebaseApp.initializeApp(context, newOptions, name);
+          AppName = name;
+          FirebaseApp.initializeApp(context, newOptions, AppName);
         }
       }
 
@@ -124,6 +132,6 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
 
   @ReactMethod
   public void setAutomaticResourceManagementEnabled(Boolean enabled) {
-    app.setAutomaticResourceManagementEnabled(enabled);
+    this.getInstance().setAutomaticResourceManagementEnabled(enabled);
   }
 }

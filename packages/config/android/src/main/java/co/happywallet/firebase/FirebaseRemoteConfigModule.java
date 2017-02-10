@@ -27,14 +27,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
 public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
     private static final String TAG = "FirebaseRemoteConfig";
-    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     public FirebaseRemoteConfigModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     }
 
     /**
@@ -63,20 +60,20 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
 
     private FirebaseRemoteConfigValue getConfig(String key, String namespace) {
         if (StringHelper.isEmpty(namespace)) {
-            return mFirebaseRemoteConfig.getValue(key);
+            return FirebaseRemoteConfig.getInstance().getValue(key);
         } else {
-            return mFirebaseRemoteConfig.getValue(key, namespace);
+            return FirebaseRemoteConfig.getInstance().getValue(key, namespace);
         }
     }
 
     @ReactMethod
     public void fetch(final Integer cacheExpirationSeconds, final Promise promise) {
-        Task fetchTask = mFirebaseRemoteConfig.fetch(cacheExpirationSeconds.longValue());
+        Task fetchTask = FirebaseRemoteConfig.getInstance().fetch(cacheExpirationSeconds.longValue());
         fetchTask.addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    promise.resolve(mFirebaseRemoteConfig.activateFetched());
+                    promise.resolve(FirebaseRemoteConfig.getInstance().activateFetched());
                 } else {
                     promise.reject("FetchError", "Failed to complete fetch task successfully");
                 }
@@ -86,19 +83,19 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void isDeveloperModeEnabled(Promise promise) {
-        promise.resolve(mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled());
+        promise.resolve(FirebaseRemoteConfig.getInstance().getInfo().getConfigSettings().isDeveloperModeEnabled());
     }
 
     @ReactMethod
     public void getFetchTimeMillis(Promise promise) {
         // Promise.resolve throw exception when Long value is passed in
         // convert it to string in java and back to number in javascript
-        promise.resolve(String.valueOf(mFirebaseRemoteConfig.getInfo().getFetchTimeMillis()));
+        promise.resolve(String.valueOf(FirebaseRemoteConfig.getInstance().getInfo().getFetchTimeMillis()));
     }
 
     @ReactMethod
     public void getLastFetchStatus(Promise promise) {
-        promise.resolve(mFirebaseRemoteConfig.getInfo().getLastFetchStatus());
+        promise.resolve(FirebaseRemoteConfig.getInstance().getInfo().getLastFetchStatus());
     }
 
     @ReactMethod
@@ -134,9 +131,9 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
             Set<String> value;
 
             if (StringHelper.isEmpty(namespace)) {
-                value = mFirebaseRemoteConfig.getKeysByPrefix(prefix);
+                value = FirebaseRemoteConfig.getInstance().getKeysByPrefix(prefix);
             } else {
-                value = mFirebaseRemoteConfig.getKeysByPrefix(prefix, namespace);
+                value = FirebaseRemoteConfig.getInstance().getKeysByPrefix(prefix, namespace);
             }
 
             String[] string = value.toArray(new String[value.size()]);
@@ -153,9 +150,9 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
             Map<String, Object> defaultSettings = ReactNativeHelper.recursivelyDeconstructReadableMap(defaults);
 
             if (StringHelper.isEmpty(namespace)) {
-                mFirebaseRemoteConfig.setDefaults(defaultSettings);
+                FirebaseRemoteConfig.getInstance().setDefaults(defaultSettings);
             } else {
-                mFirebaseRemoteConfig.setDefaults(defaultSettings, namespace);
+                FirebaseRemoteConfig.getInstance().setDefaults(defaultSettings, namespace);
             }
 
             promise.resolve(true);
@@ -175,9 +172,9 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
                     .getIdentifier(filename, "xml", packageName);
 
             if (StringHelper.isEmpty(namespace)) {
-                mFirebaseRemoteConfig.setDefaults(resourceId);
+                FirebaseRemoteConfig.getInstance().setDefaults(resourceId);
             } else {
-                mFirebaseRemoteConfig.setDefaults(resourceId, namespace);
+                FirebaseRemoteConfig.getInstance().setDefaults(resourceId, namespace);
             }
 
             promise.resolve(true);
@@ -192,6 +189,6 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(developerModeEnabled)
                 .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        FirebaseRemoteConfig.getInstance().setConfigSettings(configSettings);
     }
 }
