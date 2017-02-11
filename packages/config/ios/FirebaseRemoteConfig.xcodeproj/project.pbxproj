@@ -223,6 +223,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = SU4ZFUWE96;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"${PROJECT_DIR}/../../../ios/Pods/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -233,6 +238,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = SU4ZFUWE96;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"${PROJECT_DIR}/../../../ios/Pods/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -258,6 +268,7 @@
 				73CD4FF01E4EDCB7006A1A2F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

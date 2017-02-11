@@ -39,15 +39,15 @@ RCT_EXPORT_MODULE();
 - (NSDictionary *)getOptions: (nullable FIROptions *)options
 {
     return @{
-             @"apiKey":@(options.APIKey),
-             @"applicationId":@(options.googleAppID),
-             @"databaseUrl":@(options.databaseURL),
-             @"gcmSenderId":@(options.GCMSenderID),
-             @"storageBucket":@(options.storageBucket),
-             @"clientId":@(options.clientID),
-             @"trackingId":@(options.trackingID),
-             @"androidClientId":@(options.androidClientID),
-             @"deepLinkURLScheme":@(options.deepLinkURLScheme)
+             @"apiKey":options.APIKey,
+             @"applicationId":options.googleAppID,
+             @"databaseUrl":options.databaseURL,
+             @"gcmSenderId":options.GCMSenderID,
+             @"storageBucket":options.storageBucket,
+             @"clientId":options.clientID,
+             @"trackingId":options.trackingID,
+             @"androidClientId":options.androidClientID,
+             @"deepLinkURLScheme":options.deepLinkURLScheme
              };
 }
 

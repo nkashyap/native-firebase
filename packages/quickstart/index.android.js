@@ -13,11 +13,15 @@ import {
   NativeModules,
 } from 'react-native';
 
-import Firebase from '@native-firebase/core';
-import RemoteConfig from '@native-firebase/config';
+const FirebaseCore = NativeModules.FirebaseCore;
+const FirebaseRemoteConfig = NativeModules.FirebaseRemoteConfig;
 
-console.log('Firebase', Firebase);
-console.log('FirebaseRemoteConfig', RemoteConfig);
+// import Firebase from '@native-firebase/core';
+// import RemoteConfig from '@native-firebase/config';
+
+console.log('FirebaseCore', FirebaseCore);
+console.log('FirebaseRemoteConfig', FirebaseRemoteConfig);
+console.log('NativeModules', Object.keys(NativeModules));
 
 export default class quickstart extends Component {
   render() {

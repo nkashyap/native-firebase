@@ -1,13 +1,11 @@
+target 'quickstart' do
+end
+
 source 'https://github.com/CocoaPods/Specs.git'
 [
+  'Firebase',
   'Firebase/Core',
   'Firebase/RemoteConfig'
 ].each do |lib|
   pod lib
 end
-
-target 'quickstart' do
-end
-
-# target 'quickstartTests' do
-# end

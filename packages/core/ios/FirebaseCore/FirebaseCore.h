@@ -21,9 +21,9 @@
 
 - (FIRApp *) getApp: (nullable NSString *)name;
 
-- (NSDictionary *) getOptions: (nullable FIROptions *)options
+- (NSDictionary *) getOptions: (nullable FIROptions *)options;
 
-- (FIROptions *) getFIROptions: (nullable NSDictionary *)options
+- (FIROptions *) getFIROptions: (nullable NSDictionary *)options;
 
 
 - (void) getApps: (RCTPromiseResolveBlock)resolve
