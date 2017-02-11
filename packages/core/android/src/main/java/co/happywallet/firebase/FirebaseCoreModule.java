@@ -117,13 +117,13 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
         String apiKey = this.getValue(params, "apiKey", options.getApiKey());
         String applicationId = this.getValue(params, "applicationId", options.getApplicationId());
         String databaseUrl = this.getValue(params, "databaseUrl", options.getDatabaseUrl());
-        String gcmSenderID = this.getValue(params, "gcmSenderID", options.getGcmSenderId());
+        String gcmSenderId = this.getValue(params, "gcmSenderId", options.getGcmSenderId());
         String storageBucket = this.getValue(params, "storageBucket", options.getStorageBucket());
 
         builder.setApiKey(apiKey);
         builder.setApplicationId(applicationId);
         builder.setDatabaseUrl(databaseUrl);
-        builder.setGcmSenderId(gcmSenderID);
+        builder.setGcmSenderId(gcmSenderId);
         builder.setStorageBucket(storageBucket);
 
         try {
@@ -143,7 +143,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
             response.putString("apiKey", apiKey);
             response.putString("applicationId", applicationId);
             response.putString("databaseUrl", databaseUrl);
-            response.putString("gcmSenderID", gcmSenderID);
+            response.putString("gcmSenderId", gcmSenderId);
             response.putString("storageBucket", storageBucket);
 
             promise.resolve(response);
@@ -170,7 +170,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
             response.putString("apiKey", options.getApiKey());
             response.putString("applicationId", options.getApplicationId());
             response.putString("databaseUrl", options.getDatabaseUrl());
-            response.putString("gcmSenderID", options.getGcmSenderId());
+            response.putString("gcmSenderId", options.getGcmSenderId());
             response.putString("storageBucket", options.getStorageBucket());
 
             promise.resolve(response);

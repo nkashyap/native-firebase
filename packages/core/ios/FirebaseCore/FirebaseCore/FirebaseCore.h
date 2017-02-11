@@ -3,7 +3,7 @@
 //  FirebaseCore
 //
 //  Created by Nisheeth Kashyap on 10/02/2017.
-//  Copyright © 2017 UI Guru Ltd. All rights reserved.
+//  Copyright © 2017 Nisheeth Kashyap. All rights reserved.
 //
 
 #ifndef FirebaseCore_h
@@ -18,6 +18,37 @@
 
 }
 
+
+- (FIRApp *) getApp: (nullable NSString *)name;
+
+- (NSDictionary *) getOptions: (nullable FIROptions *)options
+
+- (FIROptions *) getFIROptions: (nullable NSDictionary *)options
+
+
+- (void) getApps: (RCTPromiseResolveBlock)resolve
+        rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) getInstance: (nullable NSString *)name
+            resolver: (RCTPromiseResolveBlock)resolve
+            rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) initializeApp: (nullable NSDictionary *)options
+                  name: (nullable NSString *)name
+              resolver: (RCTPromiseResolveBlock)resolve
+              rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) getName: (nullable NSString *)name
+        resolver: (RCTPromiseResolveBlock)resolve
+        rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) getOptions: (nullable NSString *)name
+           resolver: (RCTPromiseResolveBlock)resolve
+           rejecter: (RCTPromiseRejectBlock)reject;
 
 @end
 
