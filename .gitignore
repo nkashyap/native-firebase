@@ -4,3 +4,5 @@
 /packages/**/android/build/
 /packages/**/android/gen/
 /packages/**/local.properties
+/packages/quickstart/ios/Pods
+/packages/quickstart/ios/*.lock
