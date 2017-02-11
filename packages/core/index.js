@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 
 const FirebaseCore = NativeModules.FirebaseCore;
 
@@ -7,11 +7,42 @@ export default class Firebase {
     return FirebaseCore.DEFAULT_APP_NAME;
   }
 
-  async initializeApp(settings = {}, name = null) {
+  constructor(name = null, options = {}) {
+    this.name = name || FirebaseCore.DEFAULT_APP_NAME;
+    this.options = options;
+
+    Firebase
+      .initializeApp(options, this.name)
+      .then((response) => {
+        this.options = Object.assign({}, this.options, response);
+      });
+  }
+
+  static async getApps() {
+    return await FirebaseCore.getApps();
+  }
+
+  static async getInstance(name = null) {
+    return await FirebaseCore.getInstance(name);
+  }
+
+  static async initializeApp(settings = {}, name = null) {
     return await FirebaseCore.initializeApp(settings, name);
   }
 
-  setAutomaticResourceManagementEnabled(enabled = false) {
-    FirebaseCore.setAutomaticResourceManagementEnabled(enabled);
+  async getName() {
+    return await FirebaseCore.getName(this.name);
   }
-}
+
+  async getOptions() {
+    return await FirebaseCore.getOptions(this.name);
+  }
+
+  async hashCode() {
+    return await FirebaseCore.hashCode(this.name);
+  }
+
+  setAutomaticResourceManagementEnabled(enabled = false) {
+    FirebaseCore.setAutomaticResourceManagementEnabled(enabled, this.name);
+  }
+};

@@ -1,12 +1,13 @@
 package co.happywallet.firebase;
 
-import android.util.Log;
 import co.happywallet.firebase.helpers.StringHelper;
 
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Arguments;
@@ -21,117 +22,165 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
 public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
-  LifecycleEventListener {
-  private static final String TAG = "FirebaseCore";
-  private String AppName;
+        LifecycleEventListener {
+    private static final String TAG = "FirebaseCore";
 
-  public FirebaseCoreModule(ReactApplicationContext reactContext) {
-    super(reactContext);
-  }
-
-  private FirebaseApp getInstance() {
-    if (!StringHelper.isEmpty(AppName)) {
-      return FirebaseApp.getInstance(AppName);
-    } else {
-      return FirebaseApp.getInstance();
-    }
-  }
-
-  private String getValue(final ReadableMap params, final String key, final String defaultValue) {
-    if (params.hasKey(key)) {
-      final String value = params.getString(key);
-
-      if (!StringHelper.isEmpty(value)) {
-        return value;
-      }
+    public FirebaseCoreModule(ReactApplicationContext reactContext) {
+        super(reactContext);
     }
 
-    return defaultValue;
-  }
+    private FirebaseApp getInstance(final String name) {
+        if (!StringHelper.isEmpty(name) && !name.equals(FirebaseApp.DEFAULT_APP_NAME)) {
+            return FirebaseApp.getInstance(name);
+        } else {
+            return FirebaseApp.getInstance();
+        }
+    }
 
-  @Override
-  public String getName() {
-    return TAG;
-  }
+    private String getValue(final ReadableMap params, final String key, final String defaultValue) {
+        if (params.hasKey(key)) {
+            final String value = params.getString(key);
 
-  // Internal helpers
-  @Override
-  public void onHostResume() {
+            if (!StringHelper.isEmpty(value)) {
+                return value;
+            }
+        }
+
+        return defaultValue;
+    }
+
+    @Override
+    public String getName() {
+        return TAG;
+    }
+
+    // Internal helpers
+    @Override
+    public void onHostResume() {
 //    WritableMap params = Arguments.createMap();
 //    params.putBoolean("isForground", true);
 //    Utils.sendEvent(getReactApplicationContext(), "AppState", params);
-  }
+    }
 
-  @Override
-  public void onHostPause() {
+    @Override
+    public void onHostPause() {
 //    WritableMap params = Arguments.createMap();
 //    params.putBoolean("isForground", false);
 //    Utils.sendEvent(getReactApplicationContext(), "AppState", params);
-  }
-
-  @Override
-  public void onHostDestroy() {
-
-  }
-
-  @Override
-  public Map<String, Object> getConstants() {
-    final Map<String, Object> constants = new HashMap<>();
-
-    constants.put("DEFAULT_APP_NAME", FirebaseApp.DEFAULT_APP_NAME);
-
-    return constants;
-  }
-
-  @ReactMethod
-  public void initializeApp(final ReadableMap params, String name, final Promise promise) {
-    Context context = getReactApplicationContext().getBaseContext();
-    FirebaseOptions.Builder builder = new FirebaseOptions.Builder();
-    FirebaseOptions options = FirebaseOptions.fromResource(context);
-
-    if (options == null) {
-      options = new FirebaseOptions.Builder().build();
     }
 
-    String applicationId = this.getValue(params, "applicationId", options.getApplicationId());
-    String apiKey = this.getValue(params, "apiKey", options.getApiKey());
-    String gcmSenderID = this.getValue(params, "gcmSenderID", options.getGcmSenderId());
-    String storageBucket = this.getValue(params, "storageBucket", options.getStorageBucket());
-    String databaseUrl = this.getValue(params, "databaseUrl", options.getDatabaseUrl());
+    @Override
+    public void onHostDestroy() {
 
-    builder.setApplicationId(applicationId);
-    builder.setApiKey(apiKey);
-    builder.setGcmSenderId(gcmSenderID);
-    builder.setStorageBucket(storageBucket);
-    builder.setDatabaseUrl(databaseUrl);
+    }
 
-    try {
-      FirebaseOptions newOptions = builder.build();
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = new HashMap<>();
 
-      if (!options.equals(newOptions)) {
-        if (StringHelper.isEmpty(name)) {
-          FirebaseApp.initializeApp(context, newOptions);
-        } else {
-          AppName = name;
-          FirebaseApp.initializeApp(context, newOptions, AppName);
+        constants.put("DEFAULT_APP_NAME", FirebaseApp.DEFAULT_APP_NAME);
+
+        return constants;
+    }
+
+    @ReactMethod
+    public void getApps(final Promise promise) {
+        List<FirebaseApp> list = FirebaseApp.getApps(this.getReactApplicationContext());
+        String[] apps = new String[list.size()];
+
+        for (int i = 0; i < list.size(); i++) {
+            apps[i] = list.get(i).getName();
         }
-      }
 
-      WritableMap response = Arguments.createMap();
-      response.putString("applicationId", applicationId);
-      response.putString("apiKey", apiKey);
-      response.putString("gcmSenderID", gcmSenderID);
-      response.putString("storageBucket", storageBucket);
-      response.putString("databaseUrl", databaseUrl);
-
-      promise.resolve(response);
-    } catch (IllegalStateException ex) {
-      promise.reject("IllegalStateException", ex.getMessage(), ex);
+        promise.resolve(apps);
     }
-  }
 
-  @ReactMethod
-  public void setAutomaticResourceManagementEnabled(Boolean enabled) {
-    this.getInstance().setAutomaticResourceManagementEnabled(enabled);
-  }
+    @ReactMethod
+    public void getInstance(final String name, final Promise promise) {
+        try {
+            promise.resolve(this.getInstance(name).getName());
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void initializeApp(final ReadableMap params, final String name, final Promise promise) {
+        Context context = this.getReactApplicationContext().getBaseContext();
+        FirebaseOptions.Builder builder = new FirebaseOptions.Builder();
+        FirebaseOptions options = FirebaseOptions.fromResource(context);
+
+        if (options == null) {
+            options = new FirebaseOptions.Builder().build();
+        }
+
+        String apiKey = this.getValue(params, "apiKey", options.getApiKey());
+        String applicationId = this.getValue(params, "applicationId", options.getApplicationId());
+        String databaseUrl = this.getValue(params, "databaseUrl", options.getDatabaseUrl());
+        String gcmSenderID = this.getValue(params, "gcmSenderID", options.getGcmSenderId());
+        String storageBucket = this.getValue(params, "storageBucket", options.getStorageBucket());
+
+        builder.setApiKey(apiKey);
+        builder.setApplicationId(applicationId);
+        builder.setDatabaseUrl(databaseUrl);
+        builder.setGcmSenderId(gcmSenderID);
+        builder.setStorageBucket(storageBucket);
+
+        try {
+            FirebaseOptions newOptions = builder.build();
+
+            if (!options.equals(newOptions)) {
+                if (!StringHelper.isEmpty(name) && !name.equals(FirebaseApp.DEFAULT_APP_NAME)) {
+                    FirebaseApp.initializeApp(context, newOptions, name);
+                } else {
+                    FirebaseApp.initializeApp(context, newOptions);
+                }
+            } else {
+                Log.d(TAG, "No config changes");
+            }
+
+            WritableMap response = Arguments.createMap();
+            response.putString("apiKey", apiKey);
+            response.putString("applicationId", applicationId);
+            response.putString("databaseUrl", databaseUrl);
+            response.putString("gcmSenderID", gcmSenderID);
+            response.putString("storageBucket", storageBucket);
+
+            promise.resolve(response);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void getName(final String name, final Promise promise) {
+        try {
+            promise.resolve(this.getInstance(name).getName());
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void getOptions(final String name, final Promise promise) {
+        try {
+            FirebaseOptions options = this.getInstance(name).getOptions();
+
+            WritableMap response = Arguments.createMap();
+            response.putString("apiKey", options.getApiKey());
+            response.putString("applicationId", options.getApplicationId());
+            response.putString("databaseUrl", options.getDatabaseUrl());
+            response.putString("gcmSenderID", options.getGcmSenderId());
+            response.putString("storageBucket", options.getStorageBucket());
+
+            promise.resolve(response);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void setAutomaticResourceManagementEnabled(Boolean enabled, final String name) {
+        this.getInstance(name).setAutomaticResourceManagementEnabled(enabled);
+    }
 }
