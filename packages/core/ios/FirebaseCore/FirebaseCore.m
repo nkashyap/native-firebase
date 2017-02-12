@@ -11,6 +11,8 @@
 
 @implementation FirebaseCore
 
+NSString *DEFAULT_APP = @"__FIRAPP_DEFAULT";
+
 RCT_EXPORT_MODULE();
 
 - (dispatch_queue_t)methodQueue
@@ -21,13 +23,13 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport
 {
-    return @{@"DEFAULT_APP_NAME" : @"__FIRAPP_DEFAULT"};
+    return @{@"DEFAULT_APP_NAME" : DEFAULT_APP};
 };
 
 
 - (FIRApp *)getApp: (nullable NSString *)name
 {
-    if (name == nil || name == @"__FIRAPP_DEFAULT") {
+    if (name == nil || [name isEqualToString:DEFAULT_APP]) {
         return [FIRApp defaultApp];
     } else {
         return [FIRApp appNamed:name];
@@ -36,7 +38,7 @@ RCT_EXPORT_MODULE();
 
 
 
-- (NSDictionary *)getOptions: (nullable FIROptions *)options
+- (NSDictionary *)toJSON: (nullable FIROptions *)options
 {
     return @{
              @"apiKey":options.APIKey,
@@ -141,7 +143,7 @@ RCT_EXPORT_METHOD(initializeApp: (nullable NSDictionary *)options
                   resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
-    if (name == nil || name == @"__FIRAPP_DEFAULT") {
+    if (name == nil || [name isEqualToString:DEFAULT_APP]) {
         if (options == nil) {
             [FIRApp configure];
         } else {
@@ -158,7 +160,7 @@ RCT_EXPORT_METHOD(initializeApp: (nullable NSDictionary *)options
     }
 
     FIRApp *app = [self getApp:name];
-    resolve([self getOptions:app.options]);
+    resolve([self toJSON:app.options]);
 }
 
 
@@ -185,7 +187,7 @@ RCT_EXPORT_METHOD(getOptions: (nullable NSString *)name
     FIRApp *app = [self getApp:name];
 
     if (app != nil) {
-        resolve([self getOptions:app.options]);
+        resolve([self toJSON:app.options]);
     } else {
         resolve(@(NO));
     }
