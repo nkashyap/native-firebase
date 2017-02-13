@@ -1,28 +1,14 @@
-import React, { Component, PropTypes } from 'react';
-import {ScrollView, StyleSheet, TouchableHighlight, View, Text} from 'react-native';
+import React, {Component} from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
 import Firebase from '@native-firebase/core';
-
+import Renderer from  '../renderer';
 import ResponseView from './response';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#eeeeee',
     marginTop: 70,
-  },
-  row: {
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#bbbbbb',
-    marginLeft: 15,
-  },
-  rowText: {
-    fontSize: 14,
-  },
+  }
 });
 
 export default class CoreView extends Component {
@@ -30,104 +16,71 @@ export default class CoreView extends Component {
     this.firebase = new Firebase();
   }
 
-  goto(error, data) {
+  renderResponse(label, error, data) {
     this.props.navigator.push({
       component: ResponseView,
-      passProps: { error, data }
+      passProps: {label, error, data}
     });
   }
 
-  renderProp(prop) {
-    return (
-      <View style={styles.row}>
-        <Text style={styles.rowText}>
-          {prop}:
-        </Text>
-        <Text style={styles.rowText}>
-          {Firebase[prop]}
-        </Text>
-      </View>
-    );
-  }
+  onPress = async(key) => {
+    try {
+      let response = true;
 
-  renderMethod(method, callback) {
-    return (
-      <View>
-        <TouchableHighlight onPress={() => callback()}>
-          <View style={styles.row}>
-            <Text style={styles.rowText}>
-              {method}()
-            </Text>
-          </View>
-        </TouchableHighlight>
-        <View style={styles.separator}/>
-      </View>
-    );
-  }
+      switch (key) {
+        case 'Firebase.getApps()':
+          response = await Firebase.getApps();
+          break;
+        case 'Firebase.getInstance()':
+          response = await Firebase.getInstance();
+          break;
+        case 'Firebase.initializeApp()':
+          response = await Firebase.initializeApp();
+          break;
+        case 'getName()':
+          response = await this.firebase.getName();
+          break;
+        case 'getOptions()':
+          response = await this.firebase.getOptions();
+          break;
+        // case 'deleteApp()':
+        //   response = await this.firebase.deleteApp();
+        //   break;
+        case 'hashCode()':
+          response = await this.firebase.hashCode();
+          break;
+        case 'setAutomaticResourceManagementEnabled()':
+          await this.firebase.setAutomaticResourceManagementEnabled();
+          break;
+      }
+
+      this.renderResponse(key, null, response);
+    } catch (error) {
+      this.renderResponse(key, error);
+    }
+  };
 
   render() {
-    console.log('core.render', this.props);
     return (
       <ScrollView style={styles.container}>
-        {this.renderProp('DEFAULT_APP_NAME')}
+        {Renderer.label('Static Properties')}
+        {Renderer.property('DEFAULT_APP_NAME', Firebase.DEFAULT_APP_NAME)}
 
-        {this.renderMethod('Firebase.getApps()', async() => {
-          try {
-            this.goto(null, await Firebase.getApps());
-          } catch (e) {
-            this.goto(e);
-          }
-        })}
+        {Renderer.label('Static Methods')}
+        {Renderer.method('Firebase.getApps()', this.onPress)}
+        {Renderer.method('Firebase.getInstance()', this.onPress)}
+        {Renderer.method('Firebase.initializeApp()', this.onPress)}
 
-        {this.renderMethod('Firebase.getInstance()', async() => {
-          try {
-            this.goto(null, await Firebase.getInstance());
-          } catch (e) {
-            this.goto(e);
-          }
-        })}
+        {Renderer.label('Methods')}
+        {Renderer.method('getName()', this.onPress)}
+        {Renderer.method('getOptions()', this.onPress)}
 
-        {this.renderMethod('Firebase.initializeApp()', async() => {
-          try {
-            this.goto(null, await Firebase.initializeApp());
-          } catch (e) {
-            this.goto(e);
-          }
-        })}
+        {/*{Renderer.label('IOS Only')}*/}
+        {/*{Renderer.method('deleteApp()', this.onPress)}*/}
 
-
-        {this.renderMethod('getName', async() => {
-          try {
-            this.goto(null, await this.firebase.getName());
-          } catch (e) {
-            this.goto(e);
-          }
-        })}
-
-        {this.renderMethod('getOptions', async() => {
-          try {
-            this.goto(null, await this.firebase.getOptions());
-          } catch (e) {
-            this.goto(e);
-          }
-        })}
-
-        {this.renderMethod('hashCode', async() => {
-          try {
-            this.goto(null, await this.firebase.hashCode());
-          } catch (e) {
-            this.goto(e);
-          }
-        })}
-
-        {this.renderMethod('setAutomaticResourceManagementEnabled', async() => {
-          try {
-            this.goto(null, await this.firebase.setAutomaticResourceManagementEnabled());
-          } catch (e) {
-            this.goto(e);
-          }
-        })}
-
+        {Renderer.label('Android Only')}
+        {Renderer.method('hashCode()', this.onPress)}
+        {Renderer.method('setAutomaticResourceManagementEnabled()', this.onPress)}
       </ScrollView>
     );
   }

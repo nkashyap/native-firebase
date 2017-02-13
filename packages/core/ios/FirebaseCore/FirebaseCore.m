@@ -27,6 +27,16 @@ RCT_EXPORT_MODULE();
 };
 
 
+- (NSString *)getValue: (nullable NSString *)value
+{
+    if (value == nil){
+        return @"";
+    }
+
+    return value;
+}
+
+
 - (FIRApp *)getApp: (nullable NSString *)name
 {
     if (name == nil || [name isEqualToString:DEFAULT_APP]) {
@@ -37,31 +47,25 @@ RCT_EXPORT_MODULE();
 }
 
 
-
 - (NSDictionary *)toJSON: (nullable FIROptions *)options
 {
-    NSString *trackingID = options.trackingID;
-    if (trackingID == nil){
-        trackingID = @"";
-    }
-
-    NSString *androidClientID = options.androidClientID;
-    if (androidClientID == nil){
-        androidClientID = @"";
-    }
-
-    NSString *deepLinkURLScheme = options.deepLinkURLScheme;
-    if (deepLinkURLScheme == nil){
-        deepLinkURLScheme = @"";
-    }
+    NSString *APIKey = [self getValue:options.APIKey];
+    NSString *googleAppID = [self getValue:options.googleAppID];
+    NSString *databaseURL = [self getValue:options.databaseURL];
+    NSString *GCMSenderID = [self getValue:options.GCMSenderID];
+    NSString *storageBucket = [self getValue:options.storageBucket];
+    NSString *clientID = [self getValue:options.clientID];
+    NSString *trackingID = [self getValue:options.trackingID];
+    NSString *androidClientID = [self getValue:options.androidClientID];
+    NSString *deepLinkURLScheme = [self getValue:options.deepLinkURLScheme];
 
     NSDictionary *json = @{
-             @"apiKey":options.APIKey,
-             @"applicationId":options.googleAppID,
-             @"databaseUrl":options.databaseURL,
-             @"gcmSenderId":options.GCMSenderID,
-             @"storageBucket":options.storageBucket,
-             @"clientId":options.clientID,
+             @"apiKey":APIKey,
+             @"applicationId":googleAppID,
+             @"databaseUrl":databaseURL,
+             @"gcmSenderId":GCMSenderID,
+             @"storageBucket":storageBucket,
+             @"clientId":clientID,
              @"trackingId":trackingID,
              @"androidClientId":androidClientID,
              @"deepLinkURLScheme":deepLinkURLScheme
@@ -71,7 +75,7 @@ RCT_EXPORT_MODULE();
 }
 
 
-- (FIROptions *)getFIROptions: (nullable NSDictionary *)options
+- (FIROptions *)getOptions: (nullable NSDictionary *)options
 {
     NSDictionary *keyMapping = @{
                                  @"API_KEY": @"apiKey",
@@ -130,14 +134,26 @@ RCT_EXPORT_MODULE();
 }
 
 
-
 RCT_EXPORT_METHOD(getApps: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
     NSDictionary *apps = [FIRApp allApps];
-    resolve(apps);
-}
+    NSArray *optionKeys = [apps allKeys];
+    NSMutableDictionary *props = [[NSMutableDictionary alloc] initWithCapacity:[optionKeys count]];
 
+    for (int i=0; i < [optionKeys count]; i++) {
+        NSString *key = [optionKeys objectAtIndex:i];
+        FIRApp *value = [apps valueForKey:key];
+
+        if (value == nil) {
+            [props setValue:@"" forKey:key];
+        } else {
+            [props setValue:value.name forKey:key];
+        }
+    }
+
+    resolve(props);
+}
 
 
 RCT_EXPORT_METHOD(getInstance: (nullable NSString *)name
@@ -154,7 +170,6 @@ RCT_EXPORT_METHOD(getInstance: (nullable NSString *)name
 }
 
 
-
 RCT_EXPORT_METHOD(initializeApp: (nullable NSDictionary *)options
                   name: (nullable NSString *)name
                   resolver: (RCTPromiseResolveBlock)resolve
@@ -166,7 +181,7 @@ RCT_EXPORT_METHOD(initializeApp: (nullable NSDictionary *)options
                 if (options == nil) {
                     [FIRApp configure];
                 } else {
-                    FIROptions *opts = [self getFIROptions:options];
+                    FIROptions *opts = [self getOptions:options];
                     [FIRApp configureWithOptions:opts];
                 }
             }
@@ -174,20 +189,18 @@ RCT_EXPORT_METHOD(initializeApp: (nullable NSDictionary *)options
             if (options == nil) {
                 [FIRApp configureWithName:name options:nil];
             } else {
-                FIROptions *opts = [self getFIROptions:options];
+                FIROptions *opts = [self getOptions:options];
                 [FIRApp configureWithName:name options:opts];
             }
         }
 
         FIRApp *app = [self getApp:name];
-        NSDictionary *json = [self toJSON:app.options];
-        resolve(json);
+        resolve([self toJSON:app.options]);
     }
     @catch(NSException *exception) {
         reject([exception name], [exception debugDescription], exception);
     }
 }
-
 
 
 RCT_EXPORT_METHOD(getName: (nullable NSString *)name
@@ -204,7 +217,6 @@ RCT_EXPORT_METHOD(getName: (nullable NSString *)name
 }
 
 
-
 RCT_EXPORT_METHOD(getOptions: (nullable NSString *)name
                   resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
@@ -218,4 +230,17 @@ RCT_EXPORT_METHOD(getOptions: (nullable NSString *)name
     }
 }
 
+// TODO Not implemented
+RCT_EXPORT_METHOD(deleteApp: (nullable NSString *)name
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    FIRApp *app = [self getApp:name];
+
+    if (app != nil) {
+        resolve([self toJSON:app.options]);
+    } else {
+        resolve(@(NO));
+    }
+}
 @end

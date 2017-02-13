@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import {ScrollView, StyleSheet, TouchableHighlight, View, Text} from 'react-native';
 
 import CoreView from './core';
@@ -28,14 +28,13 @@ const styles = StyleSheet.create({
 
 export default class ListView extends Component {
   static routes = [
-    { title: 'List', hidden: true},
-    { component: ResponseView, title: 'Response', hidden: true},
-    { component: CoreView, title: 'Firebase Core'},
-    { component: ConfigView, title: 'Firebase RemoteConfig'},
+    {title: 'List', hidden: true},
+    {component: ResponseView, title: 'Response', hidden: true},
+    {component: CoreView, title: 'Firebase Core'},
+    {component: ConfigView, title: 'Firebase RemoteConfig'},
   ];
 
   onPressButton = (route) => {
-    console.log('click', route);
     this.props.navigator.push(route);
   };
 
@@ -55,7 +54,6 @@ export default class ListView extends Component {
   }
 
   render() {
-    console.log('list.render', this.props);
     return (
       <ScrollView style={styles.container}>
         {this.renderList()}

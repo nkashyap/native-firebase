@@ -31,12 +31,9 @@ const styles = StyleSheet.create({
 export default class Quickstart extends Component {
   renderScene = (route, navigator) => {
     const props = route.passProps || {};
-
-    console.log(route);
     if (route.component) {
         return <route.component navigator={navigator} {...props} />;
     }
-
     return <ListView navigator={navigator} {...props} />;
   };
 
@@ -45,7 +42,6 @@ export default class Quickstart extends Component {
   };
 
   render() {
-    console.log('app.render', this.props);
     return (
       <View style={styles.container}>
         <Navigator

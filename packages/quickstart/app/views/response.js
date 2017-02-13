@@ -1,47 +1,44 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import {ScrollView, StyleSheet, View, Text} from 'react-native';
+import JSONTree from 'react-native-json-tree';
+
+import Renderer from  '../renderer';
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#eeeeee',
     marginTop: 70,
-  },
-  title: {
-    fontSize: 17,
-    fontWeight: '500',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-  },
-  error: {
-    fontSize: 15,
-    color: 'red',
-  },
-  text: {
-    fontSize: 15,
   },
 });
 
 export default class ResponseView extends Component {
-  render() {
-    console.log('response.render', this.props);
+  renderError() {
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.title}>
-          {
-            this.props.error ? 'Error:': 'Response:'
-          }
-          </Text>
+      <View>
+        {Renderer.label(this.props.error.name)}
+        {Renderer.message(this.props.error.message)}
+        {Renderer.message(this.props.error.stack)}
+      </View>
+    );
+  }
 
-          {
-            this.props.error ?
-              <Text style={styles.error}>{this.props.error}</Text> : false
-          }
+  renderResponse() {
+    const data = typeof this.props.data === 'object' ?
+      <JSONTree data={this.props.data}/> : this.props.data;
+    return (
+      <View>
+        {Renderer.label('Response')}
+        {Renderer.message(data)}
+      </View>
+    );
+  }
 
-          {
-            this.props.data ?
-              <Text style={styles.text}>{this.props.data}</Text> : false
-          }
-        </View>
+  render() {
+    const children = this.props.error ? this.renderError() : this.renderResponse();
+    return (
+      <ScrollView style={styles.container}>
+        {Renderer.label(this.props.label)}
+        {children}
       </ScrollView>
     );
   }

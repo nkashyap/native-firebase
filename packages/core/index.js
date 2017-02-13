@@ -17,8 +17,7 @@ export default class Firebase {
         if (response) {
           this.options = Object.assign({}, this.options, response);
         }
-      })
-      .catch(console.log);
+      });
   }
 
   static async getApps() {
@@ -41,11 +40,18 @@ export default class Firebase {
     return await FirebaseCore.getOptions(this.name);
   }
 
+  // Android Only
   async hashCode() {
     return await FirebaseCore.hashCode(this.name);
   }
 
+  // Android Only
   setAutomaticResourceManagementEnabled(enabled = false) {
     FirebaseCore.setAutomaticResourceManagementEnabled(enabled, this.name);
   }
+
+  // IOS only
+  // deleteApp() {
+  //   FirebaseCore.deleteApp(this.name);
+  // }
 };

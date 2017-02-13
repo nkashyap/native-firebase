@@ -180,6 +180,15 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
     }
 
     @ReactMethod
+    public void hashCode(final String name, final Promise promise) {
+      try {
+        promise.resolve(this.getInstance(name).hashCode());
+      } catch (IllegalStateException ex) {
+        promise.reject("IllegalStateException", ex.getMessage(), ex);
+      }
+    }
+
+    @ReactMethod
     public void setAutomaticResourceManagementEnabled(Boolean enabled, final String name) {
         this.getInstance(name).setAutomaticResourceManagementEnabled(enabled);
     }

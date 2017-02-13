@@ -18,12 +18,13 @@
 
 }
 
+- (NSString *) getValue: (nullable NSString *)value;
 
 - (FIRApp *) getApp: (nullable NSString *)name;
 
 - (NSDictionary *) toJSON: (nullable FIROptions *)options;
 
-- (FIROptions *) getFIROptions: (nullable NSDictionary *)options;
+- (FIROptions *) getOptions: (nullable NSDictionary *)options;
 
 
 - (void) getApps: (RCTPromiseResolveBlock)resolve
@@ -47,6 +48,11 @@
 
 
 - (void) getOptions: (nullable NSString *)name
+           resolver: (RCTPromiseResolveBlock)resolve
+           rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) deleteApp: (nullable NSString *)name
            resolver: (RCTPromiseResolveBlock)resolve
            rejecter: (RCTPromiseRejectBlock)reject;
 
