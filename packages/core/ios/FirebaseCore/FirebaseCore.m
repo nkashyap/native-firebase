@@ -40,17 +40,34 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)toJSON: (nullable FIROptions *)options
 {
-    return @{
+    NSString *trackingID = options.trackingID;
+    if (trackingID == nil){
+        trackingID = @"";
+    }
+
+    NSString *androidClientID = options.androidClientID;
+    if (androidClientID == nil){
+        androidClientID = @"";
+    }
+
+    NSString *deepLinkURLScheme = options.deepLinkURLScheme;
+    if (deepLinkURLScheme == nil){
+        deepLinkURLScheme = @"";
+    }
+
+    NSDictionary *json = @{
              @"apiKey":options.APIKey,
              @"applicationId":options.googleAppID,
              @"databaseUrl":options.databaseURL,
              @"gcmSenderId":options.GCMSenderID,
              @"storageBucket":options.storageBucket,
              @"clientId":options.clientID,
-             @"trackingId":options.trackingID,
-             @"androidClientId":options.androidClientID,
-             @"deepLinkURLScheme":options.deepLinkURLScheme
+             @"trackingId":trackingID,
+             @"androidClientId":androidClientID,
+             @"deepLinkURLScheme":deepLinkURLScheme
              };
+
+    return json;
 }
 
 
@@ -143,24 +160,32 @@ RCT_EXPORT_METHOD(initializeApp: (nullable NSDictionary *)options
                   resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
-    if (name == nil || [name isEqualToString:DEFAULT_APP]) {
-        if (options == nil) {
-            [FIRApp configure];
+    @try{
+        if (name == nil || [name isEqualToString:DEFAULT_APP]) {
+            if ([FIRApp defaultApp] == nil){
+                if (options == nil) {
+                    [FIRApp configure];
+                } else {
+                    FIROptions *opts = [self getFIROptions:options];
+                    [FIRApp configureWithOptions:opts];
+                }
+            }
         } else {
-            FIROptions *opts = [self getFIROptions:options];
-            [FIRApp configureWithOptions:opts];
+            if (options == nil) {
+                [FIRApp configureWithName:name options:nil];
+            } else {
+                FIROptions *opts = [self getFIROptions:options];
+                [FIRApp configureWithName:name options:opts];
+            }
         }
-    } else {
-        if (options == nil) {
-            [FIRApp configureWithName:name options:nil];
-        } else {
-            FIROptions *opts = [self getFIROptions:options];
-            [FIRApp configureWithName:name options:opts];
-        }
-    }
 
-    FIRApp *app = [self getApp:name];
-    resolve([self toJSON:app.options]);
+        FIRApp *app = [self getApp:name];
+        NSDictionary *json = [self toJSON:app.options];
+        resolve(json);
+    }
+    @catch(NSException *exception) {
+        reject([exception name], [exception debugDescription], exception);
+    }
 }
 
 

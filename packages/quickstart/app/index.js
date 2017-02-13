@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import {StyleSheet, Navigator, TouchableHighlight, View, Text} from 'react-native';
 
 import ListView from './views/index';
-import ResponseView from './views/response';
-import CoreView from './views/core';
-import ConfigView from './views/config';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,18 +30,14 @@ const styles = StyleSheet.create({
 
 export default class Quickstart extends Component {
   renderScene = (route, navigator) => {
-    const props = {navigator, route};
+    const props = route.passProps || {};
 
-    switch (route.path) {
-      case 'core':
-        return <CoreView {...props} />;
-      case 'config':
-        return <ConfigView {...props} />;
-      case 'response':
-        return <ResponseView {...props} />;
-      default:
-        return (<ListView {...props} />);
+    console.log(route);
+    if (route.component) {
+        return <route.component navigator={navigator} {...props} />;
     }
+
+    return <ListView navigator={navigator} {...props} />;
   };
 
   configureScene = () => {
@@ -52,6 +45,7 @@ export default class Quickstart extends Component {
   };
 
   render() {
+    console.log('app.render', this.props);
     return (
       <View style={styles.container}>
         <Navigator

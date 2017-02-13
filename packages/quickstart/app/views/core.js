@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import {ScrollView, StyleSheet, TouchableHighlight, View, Text} from 'react-native';
 import Firebase from '@native-firebase/core';
 
+import ResponseView from './response';
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#eeeeee',
@@ -19,21 +21,19 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   rowText: {
-    fontSize: 17,
+    fontSize: 14,
   },
 });
 
 export default class CoreView extends Component {
-  constructor(...args) {
-    super(...args);
+  componentWillMount() {
     this.firebase = new Firebase();
   }
 
-  goto(response) {
-    console.log(response);
+  goto(error, data) {
     this.props.navigator.push({
-      path: 'response',
-      passProps: { response }
+      component: ResponseView,
+      passProps: { error, data }
     });
   }
 
@@ -66,13 +66,14 @@ export default class CoreView extends Component {
   }
 
   render() {
+    console.log('core.render', this.props);
     return (
       <ScrollView style={styles.container}>
         {this.renderProp('DEFAULT_APP_NAME')}
 
         {this.renderMethod('Firebase.getApps()', async() => {
           try {
-            this.goto(await Firebase.getApps());
+            this.goto(null, await Firebase.getApps());
           } catch (e) {
             this.goto(e);
           }
@@ -80,7 +81,7 @@ export default class CoreView extends Component {
 
         {this.renderMethod('Firebase.getInstance()', async() => {
           try {
-            this.goto(await Firebase.getInstance());
+            this.goto(null, await Firebase.getInstance());
           } catch (e) {
             this.goto(e);
           }
@@ -88,7 +89,7 @@ export default class CoreView extends Component {
 
         {this.renderMethod('Firebase.initializeApp()', async() => {
           try {
-            this.goto(await Firebase.initializeApp());
+            this.goto(null, await Firebase.initializeApp());
           } catch (e) {
             this.goto(e);
           }
@@ -97,7 +98,7 @@ export default class CoreView extends Component {
 
         {this.renderMethod('getName', async() => {
           try {
-            this.goto(await this.firebase.getName());
+            this.goto(null, await this.firebase.getName());
           } catch (e) {
             this.goto(e);
           }
@@ -105,7 +106,7 @@ export default class CoreView extends Component {
 
         {this.renderMethod('getOptions', async() => {
           try {
-            this.goto(await this.firebase.getOptions());
+            this.goto(null, await this.firebase.getOptions());
           } catch (e) {
             this.goto(e);
           }
@@ -113,7 +114,7 @@ export default class CoreView extends Component {
 
         {this.renderMethod('hashCode', async() => {
           try {
-            this.goto(await this.firebase.hashCode());
+            this.goto(null, await this.firebase.hashCode());
           } catch (e) {
             this.goto(e);
           }
@@ -121,7 +122,7 @@ export default class CoreView extends Component {
 
         {this.renderMethod('setAutomaticResourceManagementEnabled', async() => {
           try {
-            this.goto(await this.firebase.setAutomaticResourceManagementEnabled());
+            this.goto(null, await this.firebase.setAutomaticResourceManagementEnabled());
           } catch (e) {
             this.goto(e);
           }

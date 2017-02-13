@@ -11,23 +11,14 @@ export default class Firebase {
     this.name = name || FirebaseCore.DEFAULT_APP_NAME;
     this.options = options;
 
-    // if (this.name !== FirebaseCore.DEFAULT_APP_NAME) {
     Firebase
       .initializeApp(options, this.name)
       .then((response) => {
         if (response) {
           this.options = Object.assign({}, this.options, response);
         }
-      });
-    // } else {
-    //   this
-    //     .getOptions()
-    //     .then((response) => {
-    //       if (response) {
-    //         this.options = Object.assign({}, this.options, response);
-    //       }
-    //     });
-    // }
+      })
+      .catch(console.log);
   }
 
   static async getApps() {
