@@ -12,6 +12,7 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -86,12 +87,12 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
     @ReactMethod
     public void getApps(final Promise promise) {
         List<FirebaseApp> list = FirebaseApp.getApps(this.getReactApplicationContext());
-        String[] apps = new String[list.size()];
+        WritableArray apps = Arguments.createArray();
 
         for (int i = 0; i < list.size(); i++) {
-            apps[i] = list.get(i).getName();
+            apps.pushString(list.get(i).getName());
         }
-
+        
         promise.resolve(apps);
     }
 
