@@ -47,7 +47,8 @@ RCT_EXPORT_MODULE();
 }
 
 
-- (NSDictionary *)toJSON: (nullable FIROptions *)options
+- (NSDictionary *)toJSON: (nullable NSString *)name
+                 options: (nullable FIROptions *)options
 {
     NSString *APIKey = [self getValue:options.APIKey];
     NSString *googleAppID = [self getValue:options.googleAppID];
@@ -59,17 +60,21 @@ RCT_EXPORT_MODULE();
     NSString *androidClientID = [self getValue:options.androidClientID];
     NSString *deepLinkURLScheme = [self getValue:options.deepLinkURLScheme];
 
-    NSDictionary *json = @{
-             @"apiKey":APIKey,
-             @"applicationId":googleAppID,
-             @"databaseUrl":databaseURL,
-             @"gcmSenderId":GCMSenderID,
-             @"storageBucket":storageBucket,
-             @"clientId":clientID,
-             @"trackingId":trackingID,
-             @"androidClientId":androidClientID,
-             @"deepLinkURLScheme":deepLinkURLScheme
-             };
+    NSMutableDictionary *json = [NSMutableDictionary dictionary];
+
+    [json setValue:APIKey forKey:@"apiKey"];
+    [json setValue:googleAppID forKey:@"applicationId"];
+    [json setValue:databaseURL forKey:@"databaseUrl"];
+    [json setValue:GCMSenderID forKey:@"gcmSenderId"];
+    [json setValue:storageBucket forKey:@"storageBucket"];
+    [json setValue:clientID forKey:@"clientId"];
+    [json setValue:trackingID forKey:@"trackingId"];
+    [json setValue:androidClientID forKey:@"androidClientId"];
+    [json setValue:deepLinkURLScheme forKey:@"deepLinkURLScheme"];
+
+    if (name != nil) {
+        [json setValue:name forKey:@"name"];
+    }
 
     return json;
 }
@@ -138,17 +143,14 @@ RCT_EXPORT_METHOD(getApps: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
     NSDictionary *apps = [FIRApp allApps];
-    NSArray *optionKeys = [apps allKeys];
-    NSMutableDictionary *props = [[NSMutableDictionary alloc] initWithCapacity:[optionKeys count]];
+    NSArray *values = [apps allValues];
+    NSMutableArray *props = [[NSMutableArray alloc] initWithCapacity:[values count]];
 
-    for (int i=0; i < [optionKeys count]; i++) {
-        NSString *key = [optionKeys objectAtIndex:i];
-        FIRApp *value = [apps valueForKey:key];
+    for (int i=0; i < [values count]; i++) {
+        FIRApp *value = [values objectAtIndex:i];
 
-        if (value == nil) {
-            [props setValue:@"" forKey:key];
-        } else {
-            [props setValue:value.name forKey:key];
+        if (value != nil) {
+            [props addObject:value.name];
         }
     }
 
@@ -163,7 +165,7 @@ RCT_EXPORT_METHOD(getInstance: (nullable NSString *)name
     FIRApp *app = [self getApp:name];
 
     if (app != nil) {
-        resolve(app.name);
+        resolve([self toJSON:app.name options:app.options]);
     } else {
         resolve(@(NO));
     }
@@ -195,7 +197,7 @@ RCT_EXPORT_METHOD(initializeApp: (nullable NSDictionary *)options
         }
 
         FIRApp *app = [self getApp:name];
-        resolve([self toJSON:app.options]);
+        resolve([self toJSON:nil options:app.options]);
     }
     @catch(NSException *exception) {
         reject([exception name], [exception debugDescription], exception);
@@ -224,7 +226,7 @@ RCT_EXPORT_METHOD(getOptions: (nullable NSString *)name
     FIRApp *app = [self getApp:name];
 
     if (app != nil) {
-        resolve([self toJSON:app.options]);
+        resolve([self toJSON:nil options:app.options]);
     } else {
         resolve(@(NO));
     }
@@ -238,7 +240,7 @@ RCT_EXPORT_METHOD(deleteApp: (nullable NSString *)name
     FIRApp *app = [self getApp:name];
 
     if (app != nil) {
-        resolve([self toJSON:app.options]);
+        resolve(@(YES));
     } else {
         resolve(@(NO));
     }

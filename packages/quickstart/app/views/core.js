@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import Firebase from '@native-firebase/core';
 import Renderer from  '../renderer';
-import ResponseView from './response';
+import ListView from './';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,10 +17,10 @@ export default class CoreView extends Component {
   }
 
   renderResponse(label, error, data) {
-    this.props.navigator.push({
-      component: ResponseView,
-      passProps: {label, error, data}
-    });
+    const config = ListView.getRoute('response');
+    const route = Object.assign({}, config, {passProps: {label, error, data}});
+
+    this.props.navigator.push(route);
   }
 
   onPress = async(key) => {
@@ -50,7 +50,7 @@ export default class CoreView extends Component {
           response = await this.firebase.hashCode();
           break;
         case 'setAutomaticResourceManagementEnabled()':
-          await this.firebase.setAutomaticResourceManagementEnabled();
+          response = await this.firebase.setAutomaticResourceManagementEnabled();
           break;
       }
 

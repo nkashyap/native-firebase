@@ -92,14 +92,26 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
         for (int i = 0; i < list.size(); i++) {
             apps.pushString(list.get(i).getName());
         }
-        
+
         promise.resolve(apps);
     }
 
     @ReactMethod
     public void getInstance(final String name, final Promise promise) {
         try {
-            promise.resolve(this.getInstance(name).getName());
+            FirebaseApp app = this.getInstance(name);
+            FirebaseOptions options = app.getOptions();
+
+            WritableMap response = Arguments.createMap();
+            response.putString("name", app.getName());
+
+            response.putString("apiKey", options.getApiKey());
+            response.putString("applicationId", options.getApplicationId());
+            response.putString("databaseUrl", options.getDatabaseUrl());
+            response.putString("gcmSenderId", options.getGcmSenderId());
+            response.putString("storageBucket", options.getStorageBucket());
+
+            promise.resolve(response);
         } catch (IllegalStateException ex) {
             promise.reject("IllegalStateException", ex.getMessage(), ex);
         }
@@ -190,7 +202,12 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
     }
 
     @ReactMethod
-    public void setAutomaticResourceManagementEnabled(Boolean enabled, final String name) {
+    public void setAutomaticResourceManagementEnabled(Boolean enabled, final String name, final Promise promise) {
+      try {
         this.getInstance(name).setAutomaticResourceManagementEnabled(enabled);
+        promise.resolve(true);
+      } catch (IllegalStateException ex) {
+        promise.reject("IllegalStateException", ex.getMessage(), ex);
+      }
     }
 }

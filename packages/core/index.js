@@ -1,4 +1,4 @@
-import {NativeModules} from 'react-native';
+import {NativeModules, Platform} from 'react-native';
 
 const FirebaseCore = NativeModules.FirebaseCore;
 
@@ -42,16 +42,28 @@ export default class Firebase {
 
   // Android Only
   async hashCode() {
-    return await FirebaseCore.hashCode(this.name);
+    if (Platform.OS === 'android') {
+      return await FirebaseCore.hashCode(this.name);
+    } else {
+      return `Not supported on ${Platform.OS} platform`;
+    }
   }
 
   // Android Only
-  setAutomaticResourceManagementEnabled(enabled = false) {
-    FirebaseCore.setAutomaticResourceManagementEnabled(enabled, this.name);
+  async setAutomaticResourceManagementEnabled(enabled = false) {
+    if (Platform.OS === 'android') {
+      return await FirebaseCore.setAutomaticResourceManagementEnabled(enabled, this.name);
+    } else {
+      return `Not supported on ${Platform.OS} platform`;
+    }
   }
 
   // IOS only
   // deleteApp() {
-  //   FirebaseCore.deleteApp(this.name);
+  //   if (Platform.OS === 'ios') {
+  //     return await FirebaseCore.deleteApp(this.name);
+  //   } else {
+  //     return `Not supported on ${Platform.OS} platform`;
+  //   }
   // }
 };

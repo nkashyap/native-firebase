@@ -22,7 +22,8 @@
 
 - (FIRApp *) getApp: (nullable NSString *)name;
 
-- (NSDictionary *) toJSON: (nullable FIROptions *)options;
+- (NSDictionary *) toJSON: (nullable NSString *)name
+                  options: (nullable FIROptions *)options;
 
 - (FIROptions *) getOptions: (nullable NSDictionary *)options;
 

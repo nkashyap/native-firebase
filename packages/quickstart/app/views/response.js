@@ -27,7 +27,6 @@ export default class ResponseView extends Component {
       <JSONTree data={this.props.data}/> : this.props.data;
     return (
       <View>
-        {Renderer.label('Response')}
         {Renderer.message(data)}
       </View>
     );

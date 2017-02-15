@@ -28,11 +28,15 @@ const styles = StyleSheet.create({
 
 export default class ListView extends Component {
   static routes = [
-    {title: 'List', hidden: true},
-    {component: ResponseView, title: 'Response', hidden: true},
-    {component: CoreView, title: 'Firebase Core'},
-    {component: ConfigView, title: 'Firebase RemoteConfig'},
+    {path: 'list', title: 'List', hidden: true},
+    {path: 'response', component: ResponseView, title: 'Response', hidden: true},
+    {path: 'core', component: CoreView, title: 'Firebase Core'},
+    {path: 'config', component: ConfigView, title: 'Firebase RemoteConfig'},
   ];
+
+  static getRoute(path) {
+    return ListView.routes.find((r) => r.path === path);
+  }
 
   onPressButton = (route) => {
     this.props.navigator.push(route);
