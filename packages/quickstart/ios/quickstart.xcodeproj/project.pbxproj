@@ -24,6 +24,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		735585FD1E542E2B00CF7654 /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 735585FC1E542E2B00CF7654 /* config.plist */; };
 		73CD50531E4F1FA6006A1A2F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73CD50521E4F1FA6006A1A2F /* GoogleService-Info.plist */; };
 		73CD50FA1E4F55AC006A1A2F /* libFirebaseRemoteConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73CD50F91E4F4FCC006A1A2F /* libFirebaseRemoteConfig.a */; };
 		73CD50FB1E4F55B9006A1A2F /* libFirebaseCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73CD50F31E4F4FC3006A1A2F /* libFirebaseCore.a */; };
@@ -251,6 +252,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		538E53C33183CF3BB7F5C293 /* Pods-quickstart.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickstart.release.xcconfig"; path = "Pods/Target Support Files/Pods-quickstart/Pods-quickstart.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		735585FC1E542E2B00CF7654 /* config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = config.plist; path = quickstart/config.plist; sourceTree = "<group>"; };
 		73CD50521E4F1FA6006A1A2F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "quickstart/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		73CD50EE1E4F4FC3006A1A2F /* FirebaseCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseCore.xcodeproj; path = "../node_modules/@native-firebase/core/ios/FirebaseCore.xcodeproj"; sourceTree = "<group>"; };
 		73CD50F41E4F4FCB006A1A2F /* FirebaseRemoteConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseRemoteConfig.xcodeproj; path = "../node_modules/@native-firebase/config/ios/FirebaseRemoteConfig.xcodeproj"; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 		13B07FAE1A68108700A75B9A /* quickstart */ = {
 			isa = PBXGroup;
 			children = (
+				735585FC1E542E2B00CF7654 /* config.plist */,
 				73CD50521E4F1FA6006A1A2F /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -843,6 +846,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				735585FD1E542E2B00CF7654 /* config.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				73CD50531E4F1FA6006A1A2F /* GoogleService-Info.plist in Resources */,

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap xmlns:android="http://schemas.android.com/apk/res/android">
+  <entry>
+    <key>app_author</key>
+    <value>HappyWallet</value>
+  </entry>
+  <entry>
+    <key>app_boolean</key>
+    <value>false</value>
+  </entry>
+  <entry>
+    <key>app_double</key>
+    <value>1090674812.49</value>
+  </entry>
+  <entry>
+    <key>app_long</key>
+    <value>1147483647</value>
+  </entry>
+</defaultsMap>

@@ -57,7 +57,7 @@ export default class Renderer {
         <View style={styles.message}>
           {
             typeof message === 'object' ?
-              message : <Text style={styles.messageText}>{message}</Text>
+              message : <Text style={styles.messageText}>{String(message)}</Text>
           }
         </View>
         <View style={styles.separator}/>

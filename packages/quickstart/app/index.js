@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 export default class Quickstart extends Component {
   renderScene = (route, navigator) => {
     const props = route.passProps || {};
+
     if (route.component) {
         return <route.component navigator={navigator} {...props} />;
     }
@@ -46,7 +47,6 @@ export default class Quickstart extends Component {
       <View style={styles.container}>
         <Navigator
           initialRoute={ListView.routes[0]}
-          initialRouteStack={ListView.routes}
           renderScene={this.renderScene}
           configureScene={this.configureScene}
           navigationBar={

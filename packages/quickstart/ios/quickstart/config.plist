@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>app_author</key>
+	<string>HappyWallet</string>
+	<key>app_boolean</key>
+	<false/>
+	<key>app_double</key>
+	<real>1090674812.49</real>
+	<key>app_long</key>
+	<integer>1147483647</integer>
+</dict>
+</plist>
