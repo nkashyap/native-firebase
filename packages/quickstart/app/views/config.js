@@ -7,7 +7,7 @@ import ListView from './';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#eeeeee',
-    marginTop: 70,
+    marginTop: 65,
   }
 });
 

@@ -8,7 +8,7 @@ import ResponseView from './response';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#eeeeee',
-    marginTop: 70,
+    marginTop: 65,
   },
   row: {
     backgroundColor: 'white',

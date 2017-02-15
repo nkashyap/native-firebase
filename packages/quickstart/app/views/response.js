@@ -7,7 +7,7 @@ import Renderer from  '../renderer';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#eeeeee',
-    marginTop: 70,
+    marginTop: 65,
   },
 });
 
