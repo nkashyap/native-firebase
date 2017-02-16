@@ -7,3 +7,4 @@
 /packages/quickstart/ios/Pods
 /packages/quickstart/ios/*.lock
 /.tmp/
+*.iml
