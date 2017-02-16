@@ -43,9 +43,6 @@ export default class CoreView extends Component {
         case 'getOptions()':
           response = await this.firebase.getOptions();
           break;
-        // case 'deleteApp()':
-        //   response = await this.firebase.deleteApp();
-        //   break;
         case 'hashCode()':
           response = await this.firebase.hashCode();
           break;
@@ -75,12 +72,13 @@ export default class CoreView extends Component {
         {Renderer.method('getName()', this.onPress)}
         {Renderer.method('getOptions()', this.onPress)}
 
-        {/*{Renderer.label('IOS Only')}*/}
-        {/*{Renderer.method('deleteApp()', this.onPress)}*/}
-
-        {Renderer.label('Android Only')}
+        {Renderer.label('Android only')}
         {Renderer.method('hashCode()', this.onPress)}
         {Renderer.method('setAutomaticResourceManagementEnabled()', this.onPress)}
+
+        {Renderer.label('TODO - IOS only')}
+        {Renderer.method('deleteApp()')}
+
       </ScrollView>
     );
   }

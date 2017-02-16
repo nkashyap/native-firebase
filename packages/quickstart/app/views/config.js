@@ -12,6 +12,10 @@ const styles = StyleSheet.create({
 });
 
 export default class ConfigView extends Component {
+  componentWillMount() {
+    FirebaseRemoteConfig.setDeveloperModeEnabled(true);
+  }
+
   renderResponse(label, error, data) {
     const config = ListView.getRoute('response');
     const route = Object.assign({}, config, {passProps: {label, error, data}});
@@ -101,6 +105,15 @@ export default class ConfigView extends Component {
         {Renderer.method('FirebaseRemoteConfig.setDeveloperModeEnabled()', this.onPress)}
 
         {Renderer.method('FirebaseRemoteConfig.isDeveloperModeEnabled()', this.onPress)}
+
+        {Renderer.label('TODO - IOS')}
+        {Renderer.method('FirebaseRemoteConfig.objectForKeyedSubscript()')}
+        {Renderer.method('FirebaseRemoteConfig.allKeysFromSource()')}
+        {Renderer.method('FirebaseRemoteConfig.defaultValueForKey()')}
+
+        {Renderer.label('TODO - Android')}
+        {Renderer.method('FirebaseRemoteConfig.getByteArray()')}
+        {Renderer.method('FirebaseRemoteConfig.getValue()')}
 
       </ScrollView>
     );

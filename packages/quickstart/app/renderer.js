@@ -78,7 +78,7 @@ export default class Renderer {
     );
   }
 
-  static method(method, callback) {
+  static method(method, callback = () => {}) {
     return (
       <View>
         <TouchableHighlight onPress={() => callback(method)}>
