@@ -126,8 +126,18 @@ android {
 }
 
 dependencies {
-  compile project(':native-firebase-core')
+  compile project(':native-firebase-admob')
+  compile project(':native-firebase-analytics')
+  compile project(':native-firebase-app-indexing')
+  compile project(':native-firebase-auth')
   compile project(':native-firebase-config')
+  compile project(':native-firebase-core')
+  compile project(':native-firebase-crash')
+  compile project(':native-firebase-database')
+  compile project(':native-firebase-dynamiclinks')
+  compile project(':native-firebase-invites')
+  compile project(':native-firebase-messaging')
+  compile project(':native-firebase-storage')
   compile fileTree(dir: "libs", include: ["*.jar"])
   compile "com.android.support:appcompat-v7:23.0.1"
   compile "com.facebook.react:react-native:0.41.+"  // From node_modules
