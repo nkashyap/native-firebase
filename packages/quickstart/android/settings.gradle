@@ -24,8 +24,9 @@ project(':native-firebase-crash').projectDir = new File(rootProject.projectDir, 
 include ':native-firebase-database'
 project(':native-firebase-database').projectDir = new File(rootProject.projectDir, '../../database/android')
 
-include ':native-firebase-dynamiclinks'
-project(':native-firebase-dynamiclinks').projectDir = new File(rootProject.projectDir, '../../dynamiclinks/android')
+include ':native-firebase-dynamic-links'
+project(':native-firebase-dynamic-links').projectDir = new File(rootProject.projectDir, '../.' +
+  './dynamic-links/android')
 
 include ':native-firebase-helpers'
 project(':native-firebase-helpers').projectDir = new File(rootProject.projectDir, '../../helpers/android')

@@ -25,9 +25,19 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		735585FD1E542E2B00CF7654 /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 735585FC1E542E2B00CF7654 /* config.plist */; };
+		739268971E561663004DC1CB /* libFirebaseAdMob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268371E56124A004DC1CB /* libFirebaseAdMob.a */; };
+		739268981E56166E004DC1CB /* libFirebaseStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268941E561588004DC1CB /* libFirebaseStorage.a */; };
+		739268DD1E562FA6004DC1CB /* libFirebaseCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268DC1E562FA6004DC1CB /* libFirebaseCore.a */; };
+		739268DE1E562FAB004DC1CB /* libFirebaseRemoteConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268C11E562F7C004DC1CB /* libFirebaseRemoteConfig.a */; };
+		7392691E1E5632EF004DC1CB /* libFirebaseAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268581E5614F5004DC1CB /* libFirebaseAnalytics.a */; };
+		7392691F1E5632F2004DC1CB /* libFirebaseAppIndexing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392685E1E561502004DC1CB /* libFirebaseAppIndexing.a */; };
+		739269201E5632F6004DC1CB /* libFirebaseAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268641E56150F004DC1CB /* libFirebaseAuth.a */; };
+		739269211E5632F9004DC1CB /* libFirebaseCrash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268761E561532004DC1CB /* libFirebaseCrash.a */; };
+		739269221E5632FC004DC1CB /* libFirebaseDatabase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392687C1E561544004DC1CB /* libFirebaseDatabase.a */; };
+		739269231E563300004DC1CB /* libFirebaseDynamicLinks.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392689E1E561790004DC1CB /* libFirebaseDynamicLinks.a */; };
+		739269241E563305004DC1CB /* libFirebaseInvites.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 739268881E561568004DC1CB /* libFirebaseInvites.a */; };
+		739269251E563308004DC1CB /* libFirebaseMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7392688E1E561578004DC1CB /* libFirebaseMessaging.a */; };
 		73CD50531E4F1FA6006A1A2F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73CD50521E4F1FA6006A1A2F /* GoogleService-Info.plist */; };
-		73CD50FA1E4F55AC006A1A2F /* libFirebaseRemoteConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73CD50F91E4F4FCC006A1A2F /* libFirebaseRemoteConfig.a */; };
-		73CD50FB1E4F55B9006A1A2F /* libFirebaseCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73CD50F31E4F4FC3006A1A2F /* libFirebaseCore.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -200,19 +210,89 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
-		73CD50F21E4F4FC3006A1A2F /* PBXContainerItemProxy */ = {
+		739268361E56124A004DC1CB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 73CD50EE1E4F4FC3006A1A2F /* FirebaseCore.xcodeproj */;
+			containerPortal = 739268321E56124A004DC1CB /* FirebaseAdMob.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 73CD4FCF1E4E29AC006A1A2F;
-			remoteInfo = FirebaseCore;
+			remoteGlobalIDString = 734D93071E5592B500F3E2D1;
+			remoteInfo = FirebaseAdMob;
 		};
-		73CD50F81E4F4FCC006A1A2F /* PBXContainerItemProxy */ = {
+		739268571E5614F5004DC1CB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 73CD50F41E4F4FCB006A1A2F /* FirebaseRemoteConfig.xcodeproj */;
+			containerPortal = 739268531E5614F4004DC1CB /* FirebaseAnalytics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D931C1E5592CA00F3E2D1;
+			remoteInfo = FirebaseAnalytics;
+		};
+		7392685D1E561502004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 739268591E561502004DC1CB /* FirebaseAppIndexing.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D93311E5592E300F3E2D1;
+			remoteInfo = FirebaseAppIndexing;
+		};
+		739268631E56150F004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7392685F1E56150F004DC1CB /* FirebaseAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D93461E5592F900F3E2D1;
+			remoteInfo = FirebaseAuth;
+		};
+		739268751E561532004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 739268711E561532004DC1CB /* FirebaseCrash.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D92891E55915100F3E2D1;
+			remoteInfo = FirebaseCrash;
+		};
+		7392687B1E561544004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 739268771E561544004DC1CB /* FirebaseDatabase.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D929E1E55918000F3E2D1;
+			remoteInfo = FirebaseDatabase;
+		};
+		739268871E561568004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 739268831E561568004DC1CB /* FirebaseInvites.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D92C81E5591E400F3E2D1;
+			remoteInfo = FirebaseInvites;
+		};
+		7392688D1E561578004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 739268891E561578004DC1CB /* FirebaseMessaging.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D92DD1E5591FF00F3E2D1;
+			remoteInfo = FirebaseMessaging;
+		};
+		739268931E561588004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7392688F1E561588004DC1CB /* FirebaseStorage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D92F21E55921A00F3E2D1;
+			remoteInfo = FirebaseStorage;
+		};
+		7392689D1E561790004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 739268991E561790004DC1CB /* FirebaseDynamicLinks.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 734D92B31E5591B000F3E2D1;
+			remoteInfo = FirebaseDynamicLinks;
+		};
+		739268C01E562F7C004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 739268651E56151B004DC1CB /* FirebaseRemoteConfig.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 73CD4FE51E4EDCB7006A1A2F;
 			remoteInfo = FirebaseRemoteConfig;
+		};
+		739268FC1E56307E004DC1CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7392686B1E561525004DC1CB /* FirebaseCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 73CD4FCF1E4E29AC006A1A2F;
+			remoteInfo = FirebaseCore;
 		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -253,9 +333,20 @@
 		538E53C33183CF3BB7F5C293 /* Pods-quickstart.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quickstart.release.xcconfig"; path = "Pods/Target Support Files/Pods-quickstart/Pods-quickstart.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		735585FC1E542E2B00CF7654 /* config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = config.plist; path = quickstart/config.plist; sourceTree = "<group>"; };
+		739268321E56124A004DC1CB /* FirebaseAdMob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseAdMob.xcodeproj; path = ../../admob/ios/FirebaseAdMob.xcodeproj; sourceTree = "<group>"; };
+		739268531E5614F4004DC1CB /* FirebaseAnalytics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseAnalytics.xcodeproj; path = ../../analytics/ios/FirebaseAnalytics.xcodeproj; sourceTree = "<group>"; };
+		739268591E561502004DC1CB /* FirebaseAppIndexing.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseAppIndexing.xcodeproj; path = "../../app-indexing/ios/FirebaseAppIndexing.xcodeproj"; sourceTree = "<group>"; };
+		7392685F1E56150F004DC1CB /* FirebaseAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseAuth.xcodeproj; path = ../../auth/ios/FirebaseAuth.xcodeproj; sourceTree = "<group>"; };
+		739268651E56151B004DC1CB /* FirebaseRemoteConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseRemoteConfig.xcodeproj; path = ../../config/ios/FirebaseRemoteConfig.xcodeproj; sourceTree = SOURCE_ROOT; };
+		7392686B1E561525004DC1CB /* FirebaseCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseCore.xcodeproj; path = ../../core/ios/FirebaseCore.xcodeproj; sourceTree = "<group>"; };
+		739268711E561532004DC1CB /* FirebaseCrash.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseCrash.xcodeproj; path = ../../crash/ios/FirebaseCrash.xcodeproj; sourceTree = "<group>"; };
+		739268771E561544004DC1CB /* FirebaseDatabase.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseDatabase.xcodeproj; path = ../../database/ios/FirebaseDatabase.xcodeproj; sourceTree = "<group>"; };
+		739268831E561568004DC1CB /* FirebaseInvites.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseInvites.xcodeproj; path = ../../invites/ios/FirebaseInvites.xcodeproj; sourceTree = "<group>"; };
+		739268891E561578004DC1CB /* FirebaseMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseMessaging.xcodeproj; path = ../../messaging/ios/FirebaseMessaging.xcodeproj; sourceTree = "<group>"; };
+		7392688F1E561588004DC1CB /* FirebaseStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseStorage.xcodeproj; path = ../../storage/ios/FirebaseStorage.xcodeproj; sourceTree = "<group>"; };
+		739268991E561790004DC1CB /* FirebaseDynamicLinks.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseDynamicLinks.xcodeproj; path = "../../dynamic-links/ios/FirebaseDynamicLinks.xcodeproj"; sourceTree = "<group>"; };
+		739268DC1E562FA6004DC1CB /* libFirebaseCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFirebaseCore.a; path = "../../core/ios/build/Debug-iphoneos/libFirebaseCore.a"; sourceTree = "<group>"; };
 		73CD50521E4F1FA6006A1A2F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "quickstart/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		73CD50EE1E4F4FC3006A1A2F /* FirebaseCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseCore.xcodeproj; path = "../node_modules/@native-firebase/core/ios/FirebaseCore.xcodeproj"; sourceTree = "<group>"; };
-		73CD50F41E4F4FCB006A1A2F /* FirebaseRemoteConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FirebaseRemoteConfig.xcodeproj; path = "../node_modules/@native-firebase/config/ios/FirebaseRemoteConfig.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		90AE7F9C40593A79F1EDC567 /* libPods-quickstart.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-quickstart.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -276,8 +367,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73CD50FB1E4F55B9006A1A2F /* libFirebaseCore.a in Frameworks */,
-				73CD50FA1E4F55AC006A1A2F /* libFirebaseRemoteConfig.a in Frameworks */,
+				739269251E563308004DC1CB /* libFirebaseMessaging.a in Frameworks */,
+				739269241E563305004DC1CB /* libFirebaseInvites.a in Frameworks */,
+				739269231E563300004DC1CB /* libFirebaseDynamicLinks.a in Frameworks */,
+				739269221E5632FC004DC1CB /* libFirebaseDatabase.a in Frameworks */,
+				739269211E5632F9004DC1CB /* libFirebaseCrash.a in Frameworks */,
+				739269201E5632F6004DC1CB /* libFirebaseAuth.a in Frameworks */,
+				7392691F1E5632F2004DC1CB /* libFirebaseAppIndexing.a in Frameworks */,
+				7392691E1E5632EF004DC1CB /* libFirebaseAnalytics.a in Frameworks */,
+				739268DE1E562FAB004DC1CB /* libFirebaseRemoteConfig.a in Frameworks */,
+				739268DD1E562FA6004DC1CB /* libFirebaseCore.a in Frameworks */,
+				739268981E56166E004DC1CB /* libFirebaseStorage.a in Frameworks */,
+				739268971E561663004DC1CB /* libFirebaseAdMob.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -416,24 +517,105 @@
 		6ADA5E7800ECEA9608C6726B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				739268DC1E562FA6004DC1CB /* libFirebaseCore.a */,
 				90AE7F9C40593A79F1EDC567 /* libPods-quickstart.a */,
 				CD1465AFCDBAAF4F7343038C /* libPods-quickstartTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		73CD50EF1E4F4FC3006A1A2F /* Products */ = {
+		739268331E56124A004DC1CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73CD50F31E4F4FC3006A1A2F /* libFirebaseCore.a */,
+				739268371E56124A004DC1CB /* libFirebaseAdMob.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		73CD50F51E4F4FCB006A1A2F /* Products */ = {
+		739268541E5614F4004DC1CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73CD50F91E4F4FCC006A1A2F /* libFirebaseRemoteConfig.a */,
+				739268581E5614F5004DC1CB /* libFirebaseAnalytics.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7392685A1E561502004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7392685E1E561502004DC1CB /* libFirebaseAppIndexing.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		739268601E56150F004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				739268641E56150F004DC1CB /* libFirebaseAuth.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		739268721E561532004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				739268761E561532004DC1CB /* libFirebaseCrash.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		739268781E561544004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7392687C1E561544004DC1CB /* libFirebaseDatabase.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		739268841E561568004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				739268881E561568004DC1CB /* libFirebaseInvites.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7392688A1E561578004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7392688E1E561578004DC1CB /* libFirebaseMessaging.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		739268901E561588004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				739268941E561588004DC1CB /* libFirebaseStorage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7392689A1E561790004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7392689E1E561790004DC1CB /* libFirebaseDynamicLinks.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		739268B41E562F7B004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				739268C11E562F7C004DC1CB /* libFirebaseRemoteConfig.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		739268F51E56307E004DC1CB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				739268FD1E56307E004DC1CB /* libFirebaseCore.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -450,8 +632,18 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				73CD50F41E4F4FCB006A1A2F /* FirebaseRemoteConfig.xcodeproj */,
-				73CD50EE1E4F4FC3006A1A2F /* FirebaseCore.xcodeproj */,
+				739268991E561790004DC1CB /* FirebaseDynamicLinks.xcodeproj */,
+				7392688F1E561588004DC1CB /* FirebaseStorage.xcodeproj */,
+				739268891E561578004DC1CB /* FirebaseMessaging.xcodeproj */,
+				739268831E561568004DC1CB /* FirebaseInvites.xcodeproj */,
+				739268771E561544004DC1CB /* FirebaseDatabase.xcodeproj */,
+				739268711E561532004DC1CB /* FirebaseCrash.xcodeproj */,
+				7392686B1E561525004DC1CB /* FirebaseCore.xcodeproj */,
+				739268651E56151B004DC1CB /* FirebaseRemoteConfig.xcodeproj */,
+				7392685F1E56150F004DC1CB /* FirebaseAuth.xcodeproj */,
+				739268591E561502004DC1CB /* FirebaseAppIndexing.xcodeproj */,
+				739268531E5614F4004DC1CB /* FirebaseAnalytics.xcodeproj */,
+				739268321E56124A004DC1CB /* FirebaseAdMob.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -582,12 +774,52 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 73CD50EF1E4F4FC3006A1A2F /* Products */;
-					ProjectRef = 73CD50EE1E4F4FC3006A1A2F /* FirebaseCore.xcodeproj */;
+					ProductGroup = 739268331E56124A004DC1CB /* Products */;
+					ProjectRef = 739268321E56124A004DC1CB /* FirebaseAdMob.xcodeproj */;
 				},
 				{
-					ProductGroup = 73CD50F51E4F4FCB006A1A2F /* Products */;
-					ProjectRef = 73CD50F41E4F4FCB006A1A2F /* FirebaseRemoteConfig.xcodeproj */;
+					ProductGroup = 739268541E5614F4004DC1CB /* Products */;
+					ProjectRef = 739268531E5614F4004DC1CB /* FirebaseAnalytics.xcodeproj */;
+				},
+				{
+					ProductGroup = 7392685A1E561502004DC1CB /* Products */;
+					ProjectRef = 739268591E561502004DC1CB /* FirebaseAppIndexing.xcodeproj */;
+				},
+				{
+					ProductGroup = 739268601E56150F004DC1CB /* Products */;
+					ProjectRef = 7392685F1E56150F004DC1CB /* FirebaseAuth.xcodeproj */;
+				},
+				{
+					ProductGroup = 739268F51E56307E004DC1CB /* Products */;
+					ProjectRef = 7392686B1E561525004DC1CB /* FirebaseCore.xcodeproj */;
+				},
+				{
+					ProductGroup = 739268721E561532004DC1CB /* Products */;
+					ProjectRef = 739268711E561532004DC1CB /* FirebaseCrash.xcodeproj */;
+				},
+				{
+					ProductGroup = 739268781E561544004DC1CB /* Products */;
+					ProjectRef = 739268771E561544004DC1CB /* FirebaseDatabase.xcodeproj */;
+				},
+				{
+					ProductGroup = 7392689A1E561790004DC1CB /* Products */;
+					ProjectRef = 739268991E561790004DC1CB /* FirebaseDynamicLinks.xcodeproj */;
+				},
+				{
+					ProductGroup = 739268841E561568004DC1CB /* Products */;
+					ProjectRef = 739268831E561568004DC1CB /* FirebaseInvites.xcodeproj */;
+				},
+				{
+					ProductGroup = 7392688A1E561578004DC1CB /* Products */;
+					ProjectRef = 739268891E561578004DC1CB /* FirebaseMessaging.xcodeproj */;
+				},
+				{
+					ProductGroup = 739268B41E562F7B004DC1CB /* Products */;
+					ProjectRef = 739268651E56151B004DC1CB /* FirebaseRemoteConfig.xcodeproj */;
+				},
+				{
+					ProductGroup = 739268901E561588004DC1CB /* Products */;
+					ProjectRef = 7392688F1E561588004DC1CB /* FirebaseStorage.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -804,18 +1036,88 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		73CD50F31E4F4FC3006A1A2F /* libFirebaseCore.a */ = {
+		739268371E56124A004DC1CB /* libFirebaseAdMob.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libFirebaseCore.a;
-			remoteRef = 73CD50F21E4F4FC3006A1A2F /* PBXContainerItemProxy */;
+			path = libFirebaseAdMob.a;
+			remoteRef = 739268361E56124A004DC1CB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		73CD50F91E4F4FCC006A1A2F /* libFirebaseRemoteConfig.a */ = {
+		739268581E5614F5004DC1CB /* libFirebaseAnalytics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseAnalytics.a;
+			remoteRef = 739268571E5614F5004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7392685E1E561502004DC1CB /* libFirebaseAppIndexing.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseAppIndexing.a;
+			remoteRef = 7392685D1E561502004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		739268641E56150F004DC1CB /* libFirebaseAuth.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseAuth.a;
+			remoteRef = 739268631E56150F004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		739268761E561532004DC1CB /* libFirebaseCrash.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseCrash.a;
+			remoteRef = 739268751E561532004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7392687C1E561544004DC1CB /* libFirebaseDatabase.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseDatabase.a;
+			remoteRef = 7392687B1E561544004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		739268881E561568004DC1CB /* libFirebaseInvites.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseInvites.a;
+			remoteRef = 739268871E561568004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7392688E1E561578004DC1CB /* libFirebaseMessaging.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseMessaging.a;
+			remoteRef = 7392688D1E561578004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		739268941E561588004DC1CB /* libFirebaseStorage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseStorage.a;
+			remoteRef = 739268931E561588004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7392689E1E561790004DC1CB /* libFirebaseDynamicLinks.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseDynamicLinks.a;
+			remoteRef = 7392689D1E561790004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		739268C11E562F7C004DC1CB /* libFirebaseRemoteConfig.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFirebaseRemoteConfig.a;
-			remoteRef = 73CD50F81E4F4FCC006A1A2F /* PBXContainerItemProxy */;
+			remoteRef = 739268C01E562F7C004DC1CB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		739268FD1E56307E004DC1CB /* libFirebaseCore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFirebaseCore.a;
+			remoteRef = 739268FC1E56307E004DC1CB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {

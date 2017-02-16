@@ -224,9 +224,8 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = SU4ZFUWE96;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"${PROJECT_DIR}/../../../ios/Pods/**",
+					"$(SRCROOT)/../../quickstart/node_modules/react-native/React/**",
+					"${PROJECT_DIR}/../../quickstart/ios/Pods/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -239,9 +238,8 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = SU4ZFUWE96;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../../react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"${PROJECT_DIR}/../../../ios/Pods/**",
+					"$(SRCROOT)/../../quickstart/node_modules/react-native/React/**",
+					"${PROJECT_DIR}/../../quickstart/ios/Pods/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -5,7 +5,15 @@ source 'https://github.com/CocoaPods/Specs.git'
 [
   'Firebase',
   'Firebase/Core',
-  'Firebase/RemoteConfig'
+  'Firebase/AdMob',
+  'Firebase/Messaging',
+  'Firebase/Database',
+  'Firebase/Invites',
+  'Firebase/DynamicLinks',
+  'Firebase/Crash',
+  'Firebase/RemoteConfig',
+  'Firebase/Auth',
+  'Firebase/Storage'
 ].each do |lib|
   pod lib
 end

@@ -15,7 +15,7 @@
     "@native-firebase/core": "0.0.0",
     "@native-firebase/crash": "0.0.0",
     "@native-firebase/database": "0.0.0",
-    "@native-firebase/dynamiclinks": "0.0.0",
+    "@native-firebase/dynamic-links": "0.0.0",
     "@native-firebase/helpers": "0.0.0",
     "@native-firebase/invites": "0.0.0",
     "@native-firebase/messaging": "0.0.0",

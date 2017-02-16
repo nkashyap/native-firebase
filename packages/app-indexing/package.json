@@ -1,5 +1,5 @@
 {
-  "name": "@native-firebase/appindexing",
+  "name": "@native-firebase/app-indexing",
   "version": "0.0.0",
   "main": "index.js",
   "peerDependencies": {

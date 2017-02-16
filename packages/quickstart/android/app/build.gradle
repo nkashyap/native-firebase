@@ -134,7 +134,7 @@ dependencies {
   compile project(':native-firebase-core')
   compile project(':native-firebase-crash')
   compile project(':native-firebase-database')
-  compile project(':native-firebase-dynamiclinks')
+  compile project(':native-firebase-dynamic-links')
   compile project(':native-firebase-invites')
   compile project(':native-firebase-messaging')
   compile project(':native-firebase-storage')

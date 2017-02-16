@@ -1,5 +1,5 @@
 {
-  "name": "@native-firebase/dynamiclinks",
+  "name": "@native-firebase/dynamic-links",
   "version": "0.0.0",
   "main": "index.js",
   "peerDependencies": {
