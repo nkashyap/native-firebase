@@ -1,6 +1,6 @@
 {
   "name": "@native-firebase/analytics",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "main": "index.js",
   "peerDependencies": {
     "react": "*",

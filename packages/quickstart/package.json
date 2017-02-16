@@ -1,15 +1,25 @@
 {
   "name": "@native-firebase/quickstart",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
   "dependencies": {
-    "@native-firebase/config": "0.0.1",
-    "@native-firebase/core": "0.0.1",
-    "@native-firebase/helpers": "0.0.1",
+    "@native-firebase/admob": "0.0.0",
+    "@native-firebase/analytics": "0.0.0",
+    "@native-firebase/app-indexing": "0.0.0",
+    "@native-firebase/auth": "0.0.0",
+    "@native-firebase/config": "0.0.0",
+    "@native-firebase/core": "0.0.0",
+    "@native-firebase/crash": "0.0.0",
+    "@native-firebase/database": "0.0.0",
+    "@native-firebase/dynamiclinks": "0.0.0",
+    "@native-firebase/helpers": "0.0.0",
+    "@native-firebase/invites": "0.0.0",
+    "@native-firebase/messaging": "0.0.0",
+    "@native-firebase/storage": "0.0.0",
     "react": "15.4.2",
     "react-native": "0.41.2",
     "react-native-json-tree": "^0.1.0"
