@@ -113,7 +113,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
 
             promise.resolve(response);
         } catch (IllegalStateException ex) {
-            promise.reject("IllegalStateException", ex.getMessage(), ex);
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
         }
     }
 
@@ -161,7 +161,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
 
             promise.resolve(response);
         } catch (IllegalStateException ex) {
-            promise.reject("IllegalStateException", ex.getMessage(), ex);
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
         }
     }
 
@@ -170,7 +170,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
         try {
             promise.resolve(this.getInstance(name).getName());
         } catch (IllegalStateException ex) {
-            promise.reject("IllegalStateException", ex.getMessage(), ex);
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
         }
     }
 
@@ -188,7 +188,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
 
             promise.resolve(response);
         } catch (IllegalStateException ex) {
-            promise.reject("IllegalStateException", ex.getMessage(), ex);
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
         }
     }
 
@@ -197,7 +197,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
       try {
         promise.resolve(this.getInstance(name).hashCode());
       } catch (IllegalStateException ex) {
-        promise.reject("IllegalStateException", ex.getMessage(), ex);
+        promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
       }
     }
 
@@ -207,7 +207,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
         this.getInstance(name).setAutomaticResourceManagementEnabled(enabled);
         promise.resolve(true);
       } catch (IllegalStateException ex) {
-        promise.reject("IllegalStateException", ex.getMessage(), ex);
+        promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
       }
     }
 }

@@ -140,7 +140,7 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
             promise.resolve(Arguments.fromArray(string));
         } catch (Exception e) {
             Log.d(TAG, "getKeysByPrefix: " + e);
-            promise.reject("Exception", e.getMessage(), e);
+            promise.reject("Exception", e.getLocalizedMessage(), e);
         }
     }
 
@@ -158,7 +158,7 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
             promise.resolve(true);
         } catch (Exception e) {
             Log.d(TAG, "setDefaults: " + e);
-            promise.reject("Exception", e.getMessage(), e);
+            promise.reject("Exception", e.getLocalizedMessage(), e);
         }
     }
 
@@ -180,7 +180,7 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
             promise.resolve(true);
         } catch (Exception e) {
             Log.d(TAG, "setDefaultsFromFile: " + e);
-            promise.reject("Exception", e.getMessage(), e);
+            promise.reject("Exception", e.getLocalizedMessage(), e);
         }
     }
 
