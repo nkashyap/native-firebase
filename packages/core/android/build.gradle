@@ -44,8 +44,8 @@ allprojects {
 
 dependencies {
   compile project(':native-firebase-helpers')
-  compile 'com.facebook.react:react-native:0.41.2'
-  compile 'com.google.android.gms:play-services-base:10.0.1'
-  compile 'com.google.firebase:firebase-core:10.0.1'
+  compile 'com.facebook.react:react-native:0.41.+'
+  compile 'com.google.android.gms:play-services-base:10.+'
+  compile 'com.google.firebase:firebase-core:10.+'
 }
 
