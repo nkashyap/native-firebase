@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, Navigator, TouchableHighlight, View, Text} from 'react-native';
+import {StyleSheet, Navigator, TouchableHighlight, View, Text, NativeModules} from 'react-native';
 
+console.log(Object.keys(NativeModules));
 import ListView from './views/index';
 
 const styles = StyleSheet.create({
