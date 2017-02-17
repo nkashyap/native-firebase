@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-//@SuppressWarnings("unused")
 public class FirebaseRemoteConfigPackage implements ReactPackage {
   private Context mContext;
 

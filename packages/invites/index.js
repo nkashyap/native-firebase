@@ -1,6 +1,6 @@
 import {NativeModules} from 'react-native';
 
-const FirebaseAuth = NativeModules.FirebaseAuth;
+const FirebaseInvites = NativeModules.FirebaseInvites;
 
 export default {
 

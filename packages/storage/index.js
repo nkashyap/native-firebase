@@ -1,6 +1,6 @@
 import {NativeModules} from 'react-native';
 
-const FirebaseAuth = NativeModules.FirebaseAuth;
+const FirebaseStorage = NativeModules.FirebaseStorage;
 
 export default {
 
