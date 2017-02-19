@@ -19,65 +19,101 @@
     
 }
 
+
 @property FIRRemoteConfig *remoteConfig;
+
+
+- (NSDictionary *)toJSON: (nullable FIRRemoteConfigValue *)options;
+
 
 - (FIRRemoteConfigValue *) getConfig: (nullable NSString *)key
                            namespace: (nullable NSString *)namespace;
+
 
 - (void) fetch: (nonnull NSNumber *)cacheExpirationSeconds
       resolver: (RCTPromiseResolveBlock)resolve
       rejecter: (RCTPromiseRejectBlock)reject;
 
-- (void) isDeveloperModeEnabled: (RCTPromiseResolveBlock)resolve
-                       rejecter: (RCTPromiseRejectBlock)reject;
-
-- (void) getFetchTimeMillis: (RCTPromiseResolveBlock)resolve
-                   rejecter: (RCTPromiseRejectBlock)reject;
-
-- (void) getLastFetchStatus: (RCTPromiseResolveBlock)resolve
-                   rejecter: (RCTPromiseRejectBlock)reject;
-
-- (void) getString: (nullable NSString *)key
-         namespace: (nullable NSString *)namespace
-          resolver: (RCTPromiseResolveBlock)resolve
-          rejecter: (RCTPromiseRejectBlock)reject;
 
 - (void) getBoolean: (nullable NSString *)key
           namespace: (nullable NSString *)namespace
            resolver: (RCTPromiseResolveBlock)resolve
            rejecter: (RCTPromiseRejectBlock)reject;
 
+
+- (void) getByteArray: (nullable NSString *)key
+            namespace: (nullable NSString *)namespace
+             resolver: (RCTPromiseResolveBlock)resolve
+             rejecter: (RCTPromiseRejectBlock)reject;
+
+
 - (void) getDouble: (nullable NSString *)key
          namespace: (nullable NSString *)namespace
           resolver: (RCTPromiseResolveBlock)resolve
           rejecter: (RCTPromiseRejectBlock)reject;
 
-- (void) getLong: (nullable NSString *)key
-       namespace: (nullable NSString *)namespace
-        resolver: (RCTPromiseResolveBlock)resolve
+
+- (void) getInfo: (RCTPromiseResolveBlock)resolve
         rejecter: (RCTPromiseRejectBlock)reject;
 
-- (void) getSource: (nullable NSString *)key
-         namespace: (nullable NSString *)namespace
-          resolver: (RCTPromiseResolveBlock)resolve
-          rejecter: (RCTPromiseRejectBlock)reject;
 
 - (void) getKeysByPrefix: (nullable NSString *)prefix
                namespace: (nullable NSString *)namespace
                 resolver: (RCTPromiseResolveBlock)resolve
                 rejecter: (RCTPromiseRejectBlock)reject;
 
+
+- (void) getLong: (nullable NSString *)key
+       namespace: (nullable NSString *)namespace
+        resolver: (RCTPromiseResolveBlock)resolve
+        rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) getString: (nullable NSString *)key
+         namespace: (nullable NSString *)namespace
+          resolver: (RCTPromiseResolveBlock)resolve
+          rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) getValue: (nullable NSString *)key
+        namespace: (nullable NSString *)namespace
+         resolver: (RCTPromiseResolveBlock)resolve
+         rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) setConfigSettings: (BOOL *)developerModeEnabled
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject;
+
+
 - (void) setDefaults: (nullable NSDictionary *)defaults
            namespace: (nullable NSString *)namespace
             resolver: (RCTPromiseResolveBlock)resolve
             rejecter: (RCTPromiseRejectBlock)reject;
+
 
 - (void) setDefaultsFromFile: (nullable NSString *)fileName
                    namespace: (nullable NSString *)namespace
                     resolver: (RCTPromiseResolveBlock)resolve
                     rejecter: (RCTPromiseRejectBlock)reject;
 
-- (void) setDeveloperModeEnabled: (BOOL *)developerModeEnabled;
+
+// IOS only
+- (void) getByKey: (nonnull NSString *)key
+         resolver: (RCTPromiseResolveBlock)resolve
+         rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) getAllKeys: (nonnull FIRRemoteConfigSource *)source
+          namespace: (nullable NSString *)namespace
+           resolver: (RCTPromiseResolveBlock)resolve
+           rejecter: (RCTPromiseRejectBlock)reject;
+
+
+- (void) getDefaultValue: (nullable NSString *)key
+               namespace: (nullable NSString *)namespace
+                resolver: (RCTPromiseResolveBlock)resolve
+                rejecter: (RCTPromiseRejectBlock)reject;
 
 @end
 

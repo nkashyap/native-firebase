@@ -70,7 +70,7 @@ export default class Renderer {
       <View>
         <View style={styles.row}>
           <Text style={styles.rowText}>
-            {property}: {value}
+            {property}: {String(value)}
           </Text>
         </View>
         <View style={styles.separator}/>

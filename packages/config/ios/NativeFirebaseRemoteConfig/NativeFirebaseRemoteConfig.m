@@ -39,7 +39,9 @@ RCT_ENUM_CONVERTER(
 
 @implementation NativeFirebaseRemoteConfig
 
+
 RCT_EXPORT_MODULE(FirebaseRemoteConfig);
+
 
 // Run on a different thread
 - (dispatch_queue_t)methodQueue
@@ -47,9 +49,14 @@ RCT_EXPORT_MODULE(FirebaseRemoteConfig);
     return dispatch_queue_create("co.happywallet.firebase.config", DISPATCH_QUEUE_SERIAL);
 }
 
+
 - (NSDictionary *)constantsToExport
 {
     return @{
+             @"DEFAULT_VALUE_FOR_BOOLEAN" : @(NO),
+             @"DEFAULT_VALUE_FOR_DOUBLE" : @(0.0),
+             @"DEFAULT_VALUE_FOR_LONG" : @(0),
+             @"DEFAULT_VALUE_FOR_STRING" : @(""),
              @"VALUE_SOURCE_REMOTE" : @(FIRRemoteConfigSourceRemote),
              @"VALUE_SOURCE_DEFAULT" : @(FIRRemoteConfigSourceDefault),
              @"VALUE_SOURCE_STATIC" : @(FIRRemoteConfigSourceStatic),
@@ -59,6 +66,7 @@ RCT_EXPORT_MODULE(FirebaseRemoteConfig);
              @"LAST_FETCH_STATUS_NO_FETCH_YET" : @(FIRRemoteConfigFetchStatusNoFetchYet)
              };
 };
+
 
 - (id)init
 {
@@ -71,6 +79,41 @@ RCT_EXPORT_MODULE(FirebaseRemoteConfig);
     return self;
 }
 
+
+- (NSDictionary *)toJSON: (nullable FIRRemoteConfigValue *)options
+{
+    NSString *dataValue = @"";
+    NSNumber *source;
+    switch(options.source) {
+        case FIRRemoteConfigSourceDefault:
+            source = @(1);
+            break;
+        case FIRRemoteConfigSourceStatic:
+            source = @(2);
+            break;
+        default:
+            // FIRRemoteConfigSourceRemote
+            source = @(0);
+            break;
+    }
+    
+    if (options.dataValue.length > 0) {
+        dataValue = [NSString stringWithUTF8String:[options.dataValue bytes]];
+    }
+    
+    NSDictionary *json = @{
+                           @"byteArray": dataValue,
+                           @"long": options.numberValue,
+                           @"string": options.stringValue,
+                           @"source": source,
+                           @"boolean": @(options.boolValue),
+                           @"double": options.numberValue
+                           };
+    
+    return json;
+}
+
+
 - (FIRRemoteConfigValue *)getConfig: (nullable NSString *)key
                           namespace: (nullable NSString *)namespace
 {
@@ -81,6 +124,7 @@ RCT_EXPORT_MODULE(FirebaseRemoteConfig);
     }
 }
 
+
 RCT_EXPORT_METHOD(fetch: (nonnull NSNumber *)cacheExpirationSeconds
                   resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
@@ -89,8 +133,7 @@ RCT_EXPORT_METHOD(fetch: (nonnull NSNumber *)cacheExpirationSeconds
     
     [self.remoteConfig fetchWithExpirationDuration:expirationDuration completionHandler:^(FIRRemoteConfigFetchStatus status, NSError *error) {
         if (status == FIRRemoteConfigFetchStatusSuccess) {
-            [self.remoteConfig activateFetched];
-            resolve(@YES);
+            resolve(@([self.remoteConfig activateFetched]));
         } else {
             NSDictionary *err = @{
                                   @"error": @"FetchError",
@@ -102,58 +145,6 @@ RCT_EXPORT_METHOD(fetch: (nonnull NSNumber *)cacheExpirationSeconds
     
 }
 
-RCT_EXPORT_METHOD(isDeveloperModeEnabled: (RCTPromiseResolveBlock)resolve
-                  rejecter: (RCTPromiseRejectBlock)reject)
-{
-    if (self.remoteConfig.configSettings.isDeveloperModeEnabled) {
-        resolve(@YES);
-    } else {
-        resolve(@NO);
-    }
-}
-
-RCT_EXPORT_METHOD(getFetchTimeMillis: (RCTPromiseResolveBlock)resolve
-                  rejecter: (RCTPromiseRejectBlock)reject)
-{
-    if (self.remoteConfig.lastFetchTime != nil){
-        NSNumber *value = [NSNumber numberWithDouble:self.remoteConfig.lastFetchTime.timeIntervalSince1970];
-        resolve(value);
-    } else {
-        resolve(@(0));
-    }
-}
-
-RCT_EXPORT_METHOD(getLastFetchStatus: (RCTPromiseResolveBlock)resolve
-                  rejecter: (RCTPromiseRejectBlock)reject)
-{
-    NSNumber *value;
-    switch(self.remoteConfig.lastFetchStatus) {
-        case FIRRemoteConfigFetchStatusSuccess:
-            value = @(1);
-            break;
-        case FIRRemoteConfigFetchStatusFailure:
-            value = @(2);
-            break;
-        case FIRRemoteConfigFetchStatusThrottled:
-            value = @(3);
-            break;
-        default:
-            // FIRRemoteConfigFetchStatusNoFetchYet
-            value = @(0);
-            break;
-    }
-    resolve(value);
-}
-
-RCT_EXPORT_METHOD(getString: (nullable NSString *)key
-                  namespace: (nullable NSString *)namespace
-                  resolver: (RCTPromiseResolveBlock)resolve
-                  rejecter: (RCTPromiseRejectBlock)reject)
-{
-    FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
-    NSString *value = config.stringValue;
-    resolve(value);
-}
 
 RCT_EXPORT_METHOD(getBoolean: (nullable NSString *)key
                   namespace: (nullable NSString *)namespace
@@ -161,12 +152,23 @@ RCT_EXPORT_METHOD(getBoolean: (nullable NSString *)key
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
     FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
-    if (config.boolValue) {
-        resolve(@YES);
-    } else {
-        resolve(@NO);
-    }
+    resolve(@(config.boolValue));
 }
+
+
+RCT_EXPORT_METHOD(getByteArray: (nullable NSString *)key
+                  namespace: (nullable NSString *)namespace
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
+    NSString* value = @"";
+    if (config.dataValue.length > 0) {
+        value = [NSString stringWithUTF8String:[config.dataValue bytes]];
+    }
+    resolve(value);
+}
+
 
 RCT_EXPORT_METHOD(getDouble: (nullable NSString *)key
                   namespace: (nullable NSString *)namespace
@@ -174,40 +176,46 @@ RCT_EXPORT_METHOD(getDouble: (nullable NSString *)key
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
     FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
-    NSNumber *value = config.numberValue;
-    resolve(value);
+    resolve(config.numberValue);
 }
 
-RCT_EXPORT_METHOD(getLong: (nullable NSString *)key
-                  namespace: (nullable NSString *)namespace
-                  resolver: (RCTPromiseResolveBlock)resolve
-                  rejecter: (RCTPromiseRejectBlock)reject)
-{
-    FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
-    NSNumber *value = config.numberValue;
-    resolve(value);
-}
 
-RCT_EXPORT_METHOD(getSource: (nullable NSString *)key
-                  namespace: (nullable NSString *)namespace
-                  resolver: (RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(getInfo: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
-    FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
-    NSNumber *value;
-    switch(config.source) {
-        case FIRRemoteConfigSourceDefault:
-            value = @(1);
+    NSNumber *lastFetchStatus;
+    NSNumber *lastFetchTime = 0;
+    BOOL isDeveloperModeEnabled = self.remoteConfig.configSettings.isDeveloperModeEnabled;
+    
+    switch(self.remoteConfig.lastFetchStatus) {
+        case FIRRemoteConfigFetchStatusSuccess:
+            lastFetchStatus = @(1);
             break;
-        case FIRRemoteConfigSourceStatic:
-            value = @(2);
+        case FIRRemoteConfigFetchStatusFailure:
+            lastFetchStatus = @(2);
+            break;
+        case FIRRemoteConfigFetchStatusThrottled:
+            lastFetchStatus = @(3);
             break;
         default:
-            // FIRRemoteConfigSourceRemote
-            value = @(0);
+            // FIRRemoteConfigFetchStatusNoFetchYet
+            lastFetchStatus = @(0);
             break;
     }
-    resolve(value);}
+    
+    if (self.remoteConfig.lastFetchTime != nil){
+        lastFetchTime = [NSNumber numberWithDouble:self.remoteConfig.lastFetchTime.timeIntervalSince1970];
+    }
+    
+    NSDictionary *value = @{
+                            @"isDeveloperModeEnabled": @(isDeveloperModeEnabled),
+                            @"lastFetchStatus": lastFetchStatus,
+                            @"lastFetchTime": lastFetchTime
+                            };
+    
+    resolve(value);
+}
+
 
 RCT_EXPORT_METHOD(getKeysByPrefix: (nullable NSString *)prefix
                   namespace: (nullable NSString *)namespace
@@ -220,9 +228,49 @@ RCT_EXPORT_METHOD(getKeysByPrefix: (nullable NSString *)prefix
     } else {
         data = [self.remoteConfig keysWithPrefix:prefix namespace:namespace];
     }
-    NSMutableArray *value = [[data allObjects] mutableCopy];
-    resolve(value);
+    resolve([[data allObjects] mutableCopy]);
 }
+
+
+RCT_EXPORT_METHOD(getLong: (nullable NSString *)key
+                  namespace: (nullable NSString *)namespace
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
+    resolve(config.numberValue);
+}
+
+
+RCT_EXPORT_METHOD(getString: (nullable NSString *)key
+                  namespace: (nullable NSString *)namespace
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
+    resolve(config.stringValue);
+}
+
+
+RCT_EXPORT_METHOD(getValue: (nullable NSString *)key
+                  namespace: (nullable NSString *)namespace
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
+    resolve([self toJSON:config]);
+}
+
+
+RCT_EXPORT_METHOD(setConfigSettings:(BOOL *)developerModeEnabled
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:developerModeEnabled];
+    self.remoteConfig.configSettings = remoteConfigSettings;
+    resolve(@(self.remoteConfig.configSettings.isDeveloperModeEnabled));
+}
+
 
 RCT_EXPORT_METHOD(setDefaults: (nullable NSDictionary *)defaults
                   namespace: (nullable NSString *)namespace
@@ -238,6 +286,7 @@ RCT_EXPORT_METHOD(setDefaults: (nullable NSDictionary *)defaults
     resolve(@YES);
 }
 
+
 RCT_EXPORT_METHOD(setDefaultsFromFile: (nullable NSString *)fileName
                   namespace: (nullable NSString *)namespace
                   resolver: (RCTPromiseResolveBlock)resolve
@@ -252,10 +301,36 @@ RCT_EXPORT_METHOD(setDefaultsFromFile: (nullable NSString *)fileName
     resolve(@YES);
 }
 
-RCT_EXPORT_METHOD(setDeveloperModeEnabled:(BOOL *)developerModeEnabled)
+
+
+
+// IOS only
+RCT_EXPORT_METHOD(getByKey: (nonnull NSString *)key
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
 {
-    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:developerModeEnabled];
-    self.remoteConfig.configSettings = remoteConfigSettings;
+    FIRRemoteConfigValue *config = self.remoteConfig[key];
+    resolve([self toJSON:config]);
+}
+
+
+RCT_EXPORT_METHOD(getAllKeys: (nonnull FIRRemoteConfigSource *)source
+                  namespace: (nullable NSString *)namespace
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    NSArray<NSString *> *config = [self.remoteConfig allKeysFromSource:source namespace:namespace];
+    resolve(config);
+}
+
+
+RCT_EXPORT_METHOD(getDefaultValue: (nullable NSString *)key
+                  namespace: (nullable NSString *)namespace
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject)
+{
+    FIRRemoteConfigValue *config = [self.remoteConfig defaultValueForKey:key namespace:namespace];
+    resolve([self toJSON:config]);
 }
 
 @end

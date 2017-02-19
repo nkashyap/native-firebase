@@ -22,8 +22,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
-public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
-        LifecycleEventListener {
+public class FirebaseCoreModule extends ReactContextBaseJavaModule {
     private static final String TAG = "FirebaseCore";
 
     public FirebaseCoreModule(ReactApplicationContext reactContext) {
@@ -53,26 +52,6 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule implements
     @Override
     public String getName() {
         return TAG;
-    }
-
-    // Internal helpers
-    @Override
-    public void onHostResume() {
-//    WritableMap params = Arguments.createMap();
-//    params.putBoolean("isForground", true);
-//    Utils.sendEvent(getReactApplicationContext(), "AppState", params);
-    }
-
-    @Override
-    public void onHostPause() {
-//    WritableMap params = Arguments.createMap();
-//    params.putBoolean("isForground", false);
-//    Utils.sendEvent(getReactApplicationContext(), "AppState", params);
-    }
-
-    @Override
-    public void onHostDestroy() {
-
     }
 
     @Override

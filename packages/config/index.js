@@ -1,64 +1,225 @@
-import {NativeModules} from 'react-native';
+import {NativeModules, Platform} from 'react-native';
 
-const FirebaseRemoteConfig = NativeModules.FirebaseRemoteConfig;
+const NativeFirebaseRemoteConfig = NativeModules.FirebaseRemoteConfig;
 const CACHE_EXPIRATION_SECONDS = 86400; // one day
 
-export default {
-  LAST_FETCH_STATUS_SUCCESS: FirebaseRemoteConfig.LAST_FETCH_STATUS_SUCCESS,
-  LAST_FETCH_STATUS_FAILURE: FirebaseRemoteConfig.LAST_FETCH_STATUS_FAILURE,
-  LAST_FETCH_STATUS_THROTTLED: FirebaseRemoteConfig.LAST_FETCH_STATUS_THROTTLED,
-  LAST_FETCH_STATUS_NO_FETCH_YET: FirebaseRemoteConfig.LAST_FETCH_STATUS_NO_FETCH_YET,
 
-  VALUE_SOURCE_DEFAULT: FirebaseRemoteConfig.VALUE_SOURCE_DEFAULT,
-  VALUE_SOURCE_REMOTE: FirebaseRemoteConfig.VALUE_SOURCE_REMOTE,
-  VALUE_SOURCE_STATIC: FirebaseRemoteConfig.VALUE_SOURCE_STATIC,
+class FirebaseRemoteConfigSettings {
+  constructor(enabled) {
+    this.enabled = enabled;
+  }
 
-  fetch: async(cacheExpirationSeconds = CACHE_EXPIRATION_SECONDS) =>
-    await FirebaseRemoteConfig.fetch(cacheExpirationSeconds),
+  isDeveloperModeEnabled() {
+    return this.enabled;
+  }
+}
 
-  isDeveloperModeEnabled: async() =>
-    await FirebaseRemoteConfig.isDeveloperModeEnabled(),
 
-  getFetchTimeMillis: async() => {
-    const value = await FirebaseRemoteConfig.getFetchTimeMillis();
+class FirebaseRemoteConfigInfo {
+  constructor(info) {
+    this.info = info;
+  }
 
+  getConfigSettings() {
+    return new FirebaseRemoteConfigSettings(this.info.isDeveloperModeEnabled);
+  }
+
+  getFetchTimeMillis() {
     // In Android value comes back as String
-    return Number(value);
-  },
+    return Number(this.info.lastFetchTime);
+  }
 
-  getLastFetchStatus: async() => await FirebaseRemoteConfig.getLastFetchStatus(),
+  getLastFetchStatus() {
+    return this.info.lastFetchStatus;
+  }
 
-  getString: async(key, namespace = null) =>
-    await FirebaseRemoteConfig.getString(key, namespace),
+  toJSON() {
+    return this.info;
+  }
 
-  getBoolean: async(key, namespace = null) =>
-    await FirebaseRemoteConfig.getBoolean(key, namespace),
+  toString() {
+    return JSON.stringify(this.info);
+  }
+}
 
-  getDouble: async(key, namespace = null) =>
-    await FirebaseRemoteConfig.getDouble(key, namespace),
 
-  getLong: async(key, namespace = null) => {
-    const value = await FirebaseRemoteConfig.getLong(key, namespace);
+class FirebaseRemoteConfigValue {
+  constructor(value) {
+    this.value = value;
+  }
 
+  asBoolean() {
+    return this.value.boolean;
+  }
+
+  asByteArray() {
+    const value = [];
+
+    if (this.value.byteArray) {
+      const length = this.value.byteArray.length;
+
+      for (let i = 0; i < length; i++) {
+        value.push(this.value.byteArray.charCodeAt(i));
+      }
+    }
+
+    return value;
+  }
+
+  asDouble() {
+    return this.value.double;
+  }
+
+  asLong() {
     // In Android value comes back as String
-    return Number(value);
-  },
+    return Number(this.value.long);
+  }
 
-  getSource: async(key, namespace = null) =>
-    await FirebaseRemoteConfig.getSource(key, namespace),
+  asString() {
+    return this.value.string;
+  }
 
-  getKeysByPrefix: async(prefix = null, namespace = null) =>
-    await FirebaseRemoteConfig.getKeysByPrefix(prefix, namespace),
+  getSource() {
+    return this.value.source;
+  }
 
-  setDefaults: async(settings = {}, namespace = null) =>
-    await FirebaseRemoteConfig.setDefaults(settings, namespace),
+  toJSON() {
+    return this.value;
+  }
+
+  toString() {
+    return JSON.stringify(this.value);
+  }
+}
+
+
+export default class FirebaseRemoteConfig {
+  static get DEFAULT_VALUE_FOR_BOOLEAN() {
+    return NativeFirebaseRemoteConfig.DEFAULT_VALUE_FOR_BOOLEAN;
+  }
+
+  static get DEFAULT_VALUE_FOR_DOUBLE() {
+    return NativeFirebaseRemoteConfig.DEFAULT_VALUE_FOR_DOUBLE;
+  }
+
+  static get DEFAULT_VALUE_FOR_LONG() {
+    return NativeFirebaseRemoteConfig.DEFAULT_VALUE_FOR_LONG;
+  }
+
+  static get DEFAULT_VALUE_FOR_STRING() {
+    return NativeFirebaseRemoteConfig.DEFAULT_VALUE_FOR_STRING;
+  }
+
+  static get LAST_FETCH_STATUS_SUCCESS() {
+    return NativeFirebaseRemoteConfig.LAST_FETCH_STATUS_SUCCESS;
+  }
+
+  static get LAST_FETCH_STATUS_FAILURE() {
+    return NativeFirebaseRemoteConfig.LAST_FETCH_STATUS_FAILURE;
+  }
+
+  static get LAST_FETCH_STATUS_THROTTLED() {
+    return NativeFirebaseRemoteConfig.LAST_FETCH_STATUS_THROTTLED;
+  }
+
+  static get LAST_FETCH_STATUS_NO_FETCH_YET() {
+    return NativeFirebaseRemoteConfig.LAST_FETCH_STATUS_NO_FETCH_YET;
+  }
+
+  static get VALUE_SOURCE_DEFAULT() {
+    return NativeFirebaseRemoteConfig.VALUE_SOURCE_DEFAULT;
+  }
+
+  static get VALUE_SOURCE_REMOTE() {
+    return NativeFirebaseRemoteConfig.VALUE_SOURCE_REMOTE;
+  }
+
+  static get VALUE_SOURCE_STATIC() {
+    return NativeFirebaseRemoteConfig.VALUE_SOURCE_STATIC;
+  }
+
+
+  static async fetch(cacheExpirationSeconds = CACHE_EXPIRATION_SECONDS) {
+    return await NativeFirebaseRemoteConfig.fetch(cacheExpirationSeconds);
+  }
+
+  static async getBoolean(key, namespace = null) {
+    const value = await NativeFirebaseRemoteConfig.getBoolean(key, namespace);
+    return new FirebaseRemoteConfigValue(value).asBoolean();
+  }
+
+  static async getByteArray(key, namespace = null) {
+    const value = await NativeFirebaseRemoteConfig.getByteArray(key, namespace);
+    return new FirebaseRemoteConfigValue(value).asByteArray();
+  }
+
+  static async getDouble(key, namespace = null) {
+    const value = await NativeFirebaseRemoteConfig.getDouble(key, namespace);
+    return new FirebaseRemoteConfigValue(value).asDouble();
+  }
+
+  static async getInfo() {
+    const value = await NativeFirebaseRemoteConfig.getInfo();
+    return new FirebaseRemoteConfigInfo(value);
+  }
+
+  static async getKeysByPrefix(prefix = null, namespace = null) {
+    return await NativeFirebaseRemoteConfig.getKeysByPrefix(prefix, namespace);
+  }
+
+  static async getLong(key, namespace = null) {
+    const value = await NativeFirebaseRemoteConfig.getLong(key, namespace);
+    return new FirebaseRemoteConfigValue(value).asLong();
+  }
+
+  static async getString(key, namespace = null) {
+    const value = await NativeFirebaseRemoteConfig.getString(key, namespace);
+    return new FirebaseRemoteConfigValue(value).asString();
+  }
+
+  static async getValue(key, namespace = null) {
+    const value = await NativeFirebaseRemoteConfig.getValue(key, namespace);
+    return new FirebaseRemoteConfigValue(value);
+  }
+
+  static async setConfigSettings(developmentModeEnabled = false) {
+    return await NativeFirebaseRemoteConfig.setConfigSettings(developmentModeEnabled);
+  }
+
+  static async setDefaults(settings = {}, namespace = null) {
+    return await NativeFirebaseRemoteConfig.setDefaults(settings, namespace);
+  }
 
   // In Android native-modules calls setDefaults(resourceId, setDefaultsFromFile)
   // And in IOS native-modules calls setDefaultsFromPlistFileName(filename, setDefaultsFromFile)
-  setDefaultsFromFile: async(filename = null, namespace = null) =>
-    await FirebaseRemoteConfig.setDefaultsFromFile(filename, namespace),
+  static async setDefaultsFromFile(filename = null, namespace = null) {
+    await NativeFirebaseRemoteConfig.setDefaultsFromFile(filename, namespace);
+  }
 
-  setDeveloperModeEnabled: (developmentModeEnabled = false) => {
-    FirebaseRemoteConfig.setDeveloperModeEnabled(developmentModeEnabled);
+  // IOS Only
+  static async getByKey(key) {
+    if (Platform.OS === 'ios') {
+      const value = await NativeFirebaseRemoteConfig.getByKey(key);
+      return new FirebaseRemoteConfigValue(value);
+    } else {
+      return `Not supported on ${Platform.OS} platform`;
+    }
+  }
+
+  static async getAllKeys(source, namespace = null) {
+    if (Platform.OS === 'ios') {
+      return await NativeFirebaseRemoteConfig.getAllKeys(source, namespace);
+    } else {
+      return `Not supported on ${Platform.OS} platform`;
+    }
+  }
+
+  static async getDefaultValue(key = null, namespace = null) {
+    if (Platform.OS === 'ios') {
+      const value = await NativeFirebaseRemoteConfig.getDefaultValue(key, namespace);
+      return new FirebaseRemoteConfigValue(value);
+    } else {
+      return `Not supported on ${Platform.OS} platform`;
+    }
   }
 }

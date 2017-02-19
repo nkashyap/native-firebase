@@ -4,7 +4,6 @@ import co.happywallet.firebase.helpers.StringHelper;
 import co.happywallet.firebase.helpers.ReactNativeHelper;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.Arguments;
@@ -16,7 +15,9 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
+import com.facebook.react.bridge.WritableMap;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigInfo;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
 
@@ -46,6 +47,11 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
 
+        constants.put("DEFAULT_VALUE_FOR_BOOLEAN", FirebaseRemoteConfig.DEFAULT_VALUE_FOR_BOOLEAN);
+        constants.put("DEFAULT_VALUE_FOR_DOUBLE", FirebaseRemoteConfig.DEFAULT_VALUE_FOR_DOUBLE);
+        constants.put("DEFAULT_VALUE_FOR_LONG", FirebaseRemoteConfig.DEFAULT_VALUE_FOR_LONG);
+        constants.put("DEFAULT_VALUE_FOR_STRING", FirebaseRemoteConfig.DEFAULT_VALUE_FOR_STRING);
+
         constants.put("LAST_FETCH_STATUS_SUCCESS", FirebaseRemoteConfig.LAST_FETCH_STATUS_SUCCESS);
         constants.put("LAST_FETCH_STATUS_FAILURE", FirebaseRemoteConfig.LAST_FETCH_STATUS_FAILURE);
         constants.put("LAST_FETCH_STATUS_THROTTLED", FirebaseRemoteConfig.LAST_FETCH_STATUS_THROTTLED);
@@ -59,106 +65,182 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
     }
 
     private FirebaseRemoteConfigValue getConfig(String key, String namespace) {
+        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
         if (StringHelper.isEmpty(namespace)) {
-            return FirebaseRemoteConfig.getInstance().getValue(key);
+            return instance.getValue(key);
         } else {
-            return FirebaseRemoteConfig.getInstance().getValue(key, namespace);
+            return instance.getValue(key, namespace);
         }
     }
 
     @ReactMethod
     public void fetch(final Integer cacheExpirationSeconds, final Promise promise) {
-        Task fetchTask = FirebaseRemoteConfig.getInstance().fetch(cacheExpirationSeconds.longValue());
-        fetchTask.addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    promise.resolve(FirebaseRemoteConfig.getInstance().activateFetched());
-                } else {
-                    promise.reject("FetchError", "Failed to complete fetch task successfully");
+        try {
+            Task fetchTask = FirebaseRemoteConfig.getInstance().fetch(cacheExpirationSeconds.longValue());
+            fetchTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        promise.resolve(FirebaseRemoteConfig.getInstance().activateFetched());
+                    } else {
+                        promise.reject("FetchError", "Failed to complete fetch task successfully");
+                    }
                 }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void isDeveloperModeEnabled(Promise promise) {
-        promise.resolve(FirebaseRemoteConfig.getInstance().getInfo().getConfigSettings().isDeveloperModeEnabled());
-    }
-
-    @ReactMethod
-    public void getFetchTimeMillis(Promise promise) {
-        // Promise.resolve throw exception when Long value is passed in
-        // convert it to string in java and back to number in javascript
-        promise.resolve(String.valueOf(FirebaseRemoteConfig.getInstance().getInfo().getFetchTimeMillis()));
-    }
-
-    @ReactMethod
-    public void getLastFetchStatus(Promise promise) {
-        promise.resolve(FirebaseRemoteConfig.getInstance().getInfo().getLastFetchStatus());
-    }
-
-    @ReactMethod
-    public void getString(String key, String namespace, Promise promise) {
-        promise.resolve(this.getConfig(key, namespace).asString());
+            });
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
     }
 
     @ReactMethod
     public void getBoolean(String key, String namespace, Promise promise) {
-        promise.resolve(this.getConfig(key, namespace).asBoolean());
+        try {
+            promise.resolve(this.getConfig(key, namespace).asBoolean());
+        } catch (IllegalArgumentException ex) {
+            promise.resolve(FirebaseRemoteConfig.DEFAULT_VALUE_FOR_BOOLEAN);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void getByteArray(String key, String namespace, Promise promise) {
+        try {
+            String value = new String(this.getConfig(key, namespace).asByteArray());
+            promise.resolve(value);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
     }
 
     @ReactMethod
     public void getDouble(String key, String namespace, Promise promise) {
-        promise.resolve(this.getConfig(key, namespace).asDouble());
+        try {
+            promise.resolve(this.getConfig(key, namespace).asDouble());
+        } catch (IllegalArgumentException ex) {
+            promise.resolve(FirebaseRemoteConfig.DEFAULT_VALUE_FOR_DOUBLE);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
     }
 
     @ReactMethod
-    public void getLong(String key, String namespace, Promise promise) {
-        // Promise.resolve throw exception when Long value is passed in
-        // convert it to string in java and back to number in javascript
-        promise.resolve(this.getConfig(key, namespace).asString());
-    }
+    public void getInfo(Promise promise) {
+        try {
+            FirebaseRemoteConfigInfo info = FirebaseRemoteConfig.getInstance().getInfo();
 
-    @ReactMethod
-    public void getSource(String key, String namespace, Promise promise) {
-        promise.resolve(this.getConfig(key, namespace).getSource());
+            WritableMap response = Arguments.createMap();
+            response.putBoolean("isDeveloperModeEnabled", info.getConfigSettings().isDeveloperModeEnabled());
+            response.putInt("lastFetchStatus", info.getLastFetchStatus());
+
+            // Promise.resolve throw exception when Long value is passed in
+            // convert it to string in java and back to number in javascript
+            response.putString("lastFetchTime", String.valueOf(info.getFetchTimeMillis()));
+
+            promise.resolve(response);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
     }
 
     @ReactMethod
     public void getKeysByPrefix(String prefix, String namespace, Promise promise) {
         try {
+            FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
             Set<String> value;
-
             if (StringHelper.isEmpty(namespace)) {
-                value = FirebaseRemoteConfig.getInstance().getKeysByPrefix(prefix);
+                value = instance.getKeysByPrefix(prefix);
             } else {
-                value = FirebaseRemoteConfig.getInstance().getKeysByPrefix(prefix, namespace);
+                value = instance.getKeysByPrefix(prefix, namespace);
             }
 
             String[] string = value.toArray(new String[value.size()]);
             promise.resolve(Arguments.fromArray(string));
-        } catch (Exception e) {
-            Log.d(TAG, "getKeysByPrefix: " + e);
-            promise.reject("Exception", e.getLocalizedMessage(), e);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void getLong(String key, String namespace, Promise promise) {
+        try {
+            // Promise.resolve throw exception when Long value is passed in
+            // convert it to string in java and back to number in javascript
+            promise.resolve(this.getConfig(key, namespace).asString());
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void getString(String key, String namespace, Promise promise) {
+        try {
+            promise.resolve(this.getConfig(key, namespace).asString());
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void getValue(String key, String namespace, Promise promise) {
+        try {
+            FirebaseRemoteConfigValue value = this.getConfig(key, namespace);
+
+            WritableMap response = Arguments.createMap();
+            response.putString("byteArray", new String(value.asByteArray()));
+            response.putString("long", String.valueOf(value));
+            response.putString("string", value.asString());
+            response.putInt("source", value.getSource());
+
+            try {
+                response.putBoolean("boolean", value.asBoolean());
+            } catch (IllegalArgumentException ex) {
+                response.putBoolean("boolean", FirebaseRemoteConfig.DEFAULT_VALUE_FOR_BOOLEAN);
+            }
+
+            try {
+                response.putDouble("double", value.asDouble());
+            } catch (IllegalArgumentException ex) {
+                response.putDouble("double", FirebaseRemoteConfig.DEFAULT_VALUE_FOR_DOUBLE);
+            }
+
+            promise.resolve(response);
+        } catch (IllegalArgumentException ex) {
+            promise.reject("IllegalArgumentException", ex.getLocalizedMessage(), ex);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    @ReactMethod
+    public void setConfigSettings(Boolean developerModeEnabled, Promise promise) {
+        try {
+            FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+            FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                    .setDeveloperModeEnabled(developerModeEnabled)
+                    .build();
+            instance.setConfigSettings(configSettings);
+            promise.resolve(instance.getInfo().getConfigSettings().isDeveloperModeEnabled());
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
         }
     }
 
     @ReactMethod
     public void setDefaults(ReadableMap defaults, String namespace, Promise promise) {
         try {
+            FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
             Map<String, Object> defaultSettings = ReactNativeHelper.recursivelyDeconstructReadableMap(defaults);
 
             if (StringHelper.isEmpty(namespace)) {
-                FirebaseRemoteConfig.getInstance().setDefaults(defaultSettings);
+                instance.setDefaults(defaultSettings);
             } else {
-                FirebaseRemoteConfig.getInstance().setDefaults(defaultSettings, namespace);
+                instance.setDefaults(defaultSettings, namespace);
             }
 
             promise.resolve(true);
-        } catch (Exception e) {
-            Log.d(TAG, "setDefaults: " + e);
-            promise.reject("Exception", e.getLocalizedMessage(), e);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
         }
     }
 
@@ -166,29 +248,21 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
     public void setDefaultsFromFile(String filename, String namespace, Promise promise) {
         try {
             String packageName = this.getReactApplicationContext().getPackageName();
+            FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
             int resourceId = this
                     .getReactApplicationContext()
                     .getResources()
                     .getIdentifier(filename, "xml", packageName);
 
             if (StringHelper.isEmpty(namespace)) {
-                FirebaseRemoteConfig.getInstance().setDefaults(resourceId);
+                instance.setDefaults(resourceId);
             } else {
-                FirebaseRemoteConfig.getInstance().setDefaults(resourceId, namespace);
+                instance.setDefaults(resourceId, namespace);
             }
 
             promise.resolve(true);
-        } catch (Exception e) {
-            Log.d(TAG, "setDefaultsFromFile: " + e);
-            promise.reject("Exception", e.getLocalizedMessage(), e);
+        } catch (IllegalStateException ex) {
+            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
         }
-    }
-
-    @ReactMethod
-    public void setDeveloperModeEnabled(Boolean developerModeEnabled) {
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(developerModeEnabled)
-                .build();
-        FirebaseRemoteConfig.getInstance().setConfigSettings(configSettings);
     }
 }

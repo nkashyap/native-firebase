@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		733F48691E56D5ED00867086 /* NativeFirebaseRemoteConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeFirebaseRemoteConfig.h; sourceTree = "<group>"; };
+		733F48691E56D5ED00867086 /* NativeFirebaseRemoteConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeFirebaseRemoteConfig.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		733F486A1E56D5ED00867086 /* NativeFirebaseRemoteConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeFirebaseRemoteConfig.m; sourceTree = "<group>"; };
 		73CD4FE51E4EDCB7006A1A2F /* libNativeFirebaseRemoteConfig.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNativeFirebaseRemoteConfig.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
