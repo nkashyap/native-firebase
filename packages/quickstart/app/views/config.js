@@ -46,7 +46,7 @@ export default class ConfigView extends Component {
           };
           break;
         case 'fetch()':
-          response = await FirebaseRemoteConfig.fetch();
+          response = await FirebaseRemoteConfig.fetch(0);
           break;
         case 'getBoolean()':
           response = await FirebaseRemoteConfig.getBoolean('app_boolean');
@@ -85,14 +85,14 @@ export default class ConfigView extends Component {
           break;
         case 'getByKey()':
           value = await FirebaseRemoteConfig.getByKey('app_author');
-          response = value.toJSON();
+          response = value.toJSON ? value.toJSON() : value;
           break;
         case 'getAllKeys()':
-          response = await FirebaseRemoteConfig.getAllKeys(FirebaseRemoteConfig.VALUE_SOURCE_DEFAULT);
+          response = await FirebaseRemoteConfig.getAllKeys(FirebaseRemoteConfig.VALUE_SOURCE_REMOTE);
           break;
         case 'getDefaultValue()':
           value = await FirebaseRemoteConfig.getDefaultValue('app_author');
-          response = value.toJSON();
+          response = value.toJSON ? value.toJSON() : value;
           break;
       }
 

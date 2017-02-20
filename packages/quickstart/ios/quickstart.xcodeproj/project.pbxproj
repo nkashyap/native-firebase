@@ -1324,7 +1324,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.happywallet.quickstart;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickstart;
 				PRODUCT_NAME = quickstart;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1344,7 +1344,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.happywallet.quickstart;
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickstart;
 				PRODUCT_NAME = quickstart;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

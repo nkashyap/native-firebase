@@ -144,18 +144,18 @@ export default class FirebaseRemoteConfig {
   }
 
   static async getBoolean(key, namespace = null) {
-    const value = await NativeFirebaseRemoteConfig.getBoolean(key, namespace);
-    return new FirebaseRemoteConfigValue(value).asBoolean();
+    const boolean = await NativeFirebaseRemoteConfig.getBoolean(key, namespace);
+    return new FirebaseRemoteConfigValue({ boolean }).asBoolean();
   }
 
   static async getByteArray(key, namespace = null) {
-    const value = await NativeFirebaseRemoteConfig.getByteArray(key, namespace);
-    return new FirebaseRemoteConfigValue(value).asByteArray();
+    const byteArray = await NativeFirebaseRemoteConfig.getByteArray(key, namespace);
+    return new FirebaseRemoteConfigValue({ byteArray }).asByteArray();
   }
 
   static async getDouble(key, namespace = null) {
-    const value = await NativeFirebaseRemoteConfig.getDouble(key, namespace);
-    return new FirebaseRemoteConfigValue(value).asDouble();
+    const double = await NativeFirebaseRemoteConfig.getDouble(key, namespace);
+    return new FirebaseRemoteConfigValue({ double }).asDouble();
   }
 
   static async getInfo() {
@@ -168,13 +168,13 @@ export default class FirebaseRemoteConfig {
   }
 
   static async getLong(key, namespace = null) {
-    const value = await NativeFirebaseRemoteConfig.getLong(key, namespace);
-    return new FirebaseRemoteConfigValue(value).asLong();
+    const long = await NativeFirebaseRemoteConfig.getLong(key, namespace);
+    return new FirebaseRemoteConfigValue({ long }).asLong();
   }
 
   static async getString(key, namespace = null) {
-    const value = await NativeFirebaseRemoteConfig.getString(key, namespace);
-    return new FirebaseRemoteConfigValue(value).asString();
+    const string = await NativeFirebaseRemoteConfig.getString(key, namespace);
+    return new FirebaseRemoteConfigValue({ string }).asString();
   }
 
   static async getValue(key, namespace = null) {
@@ -193,7 +193,7 @@ export default class FirebaseRemoteConfig {
   // In Android native-modules calls setDefaults(resourceId, setDefaultsFromFile)
   // And in IOS native-modules calls setDefaultsFromPlistFileName(filename, setDefaultsFromFile)
   static async setDefaultsFromFile(filename = null, namespace = null) {
-    await NativeFirebaseRemoteConfig.setDefaultsFromFile(filename, namespace);
+    return await NativeFirebaseRemoteConfig.setDefaultsFromFile(filename, namespace);
   }
 
   // IOS Only

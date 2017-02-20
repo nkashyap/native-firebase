@@ -83,72 +83,73 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
 
-  defaultConfig {
-    applicationId "com.quickstart"
-    minSdkVersion 16
-    targetSdkVersion 22
-    versionCode 1
-    versionName "1.0"
-    ndk {
-      abiFilters "armeabi-v7a", "x86"
+    defaultConfig {
+        applicationId "com.quickstart"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
     }
-  }
-  splits {
-    abi {
-      reset()
-      enable enableSeparateBuildPerCPUArchitecture
-      universalApk false  // If true, also generate a universal APK
-      include "armeabi-v7a", "x86"
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk false  // If true, also generate a universal APK
+            include "armeabi-v7a", "x86"
+        }
     }
-  }
-  buildTypes {
-    release {
-      minifyEnabled enableProguardInReleaseBuilds
-      proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+    buildTypes {
+        release {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
     }
-  }
-  // applicationVariants are e.g. debug, release
-  applicationVariants.all { variant ->
-    variant.outputs.each { output ->
-      // For each separate APK per architecture, set a unique version code as described here:
-      // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-      def versionCodes = ["armeabi-v7a": 1, "x86": 2]
-      def abi = output.getFilter(OutputFile.ABI)
-      if (abi != null) {  // null for the universal-debug, universal-release variants
-        output.versionCodeOverride =
-          versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-      }
+    // applicationVariants are e.g. debug, release
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            // For each separate APK per architecture, set a unique version code as described here:
+            // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
+            def abi = output.getFilter(OutputFile.ABI)
+            if (abi != null) {  // null for the universal-debug, universal-release variants
+                output.versionCodeOverride =
+                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+            }
+        }
     }
-  }
 }
 
 dependencies {
-  compile project(':native-firebase-core')
-  compile project(':native-firebase-admob')
-  compile project(':native-firebase-analytics')
-  compile project(':native-firebase-app-indexing')
-  compile project(':native-firebase-auth')
-  compile project(':native-firebase-config')
-  compile project(':native-firebase-crash')
-  compile project(':native-firebase-database')
-  compile project(':native-firebase-dynamic-links')
-  compile project(':native-firebase-invites')
-  compile project(':native-firebase-messaging')
-  compile project(':native-firebase-storage')
-  compile fileTree(dir: "libs", include: ["*.jar"])
-  compile "com.android.support:appcompat-v7:23.0.1"
-  compile 'com.google.android.gms:play-services:10.+'
-  compile "com.facebook.react:react-native:0.41.+"  // From node_modules
+    compile project(':native-firebase-core')
+    compile project(':native-firebase-admob')
+    compile project(':native-firebase-analytics')
+    compile project(':native-firebase-app-indexing')
+    compile project(':native-firebase-auth')
+    compile project(':native-firebase-config')
+    compile project(':native-firebase-crash')
+    compile project(':native-firebase-database')
+    compile project(':native-firebase-dynamic-links')
+    compile project(':native-firebase-invites')
+    compile project(':native-firebase-messaging')
+    compile project(':native-firebase-storage')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:support-v4:25.1.1'
+    compile 'com.facebook.react:react-native:0.41.2'
+    // From node_modules
 }
 
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use
 task copyDownloadableDepsToLibs(type: Copy) {
-  from configurations.compile
-  into 'libs'
+    from configurations.compile
+    into 'libs'
 }
 
 apply plugin: 'com.google.gms.google-services'

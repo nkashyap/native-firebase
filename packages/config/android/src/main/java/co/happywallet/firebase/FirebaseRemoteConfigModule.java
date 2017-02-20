@@ -188,7 +188,7 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
 
             WritableMap response = Arguments.createMap();
             response.putString("byteArray", new String(value.asByteArray()));
-            response.putString("long", String.valueOf(value));
+            response.putString("long", value.asString());
             response.putString("string", value.asString());
             response.putInt("source", value.getSource());
 

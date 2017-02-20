@@ -2,33 +2,33 @@
 // YES, jcenter is required twice - it somehow tricks studio into compiling deps below
 // doesn't break anything anywhere else and projects using this lib work as normal
 buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.3'
-  }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+    }
 }
 // END
 
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
-  defaultConfig {
-    minSdkVersion 16
-    targetSdkVersion 23
-    versionCode 1
-    versionName "1.0"
-    multiDexEnabled true
-  }
-  buildTypes {
-    release {
-      minifyEnabled false
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
     }
-  }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
 }
 
 // START - required to allow working on this project inside Android Studio
@@ -36,15 +36,15 @@ android {
 // doesn't break anything anywhere else and projects using this lib work as normal
 // you'll now have code completion/validation and all the other AS goodies.
 allprojects {
-  repositories {
-    jcenter()
-  }
+    repositories {
+        jcenter()
+    }
 }
 // END
 
 dependencies {
-  compile project(':native-firebase-helpers')
-  compile 'com.facebook.react:react-native:0.41.+'
-  compile 'com.google.firebase:firebase-database:10.+'
+    compile project(':native-firebase-helpers')
+    compile 'com.facebook.react:react-native:0.41.2'
+    compile 'com.google.firebase:firebase-database:10.2.0'
 }
 

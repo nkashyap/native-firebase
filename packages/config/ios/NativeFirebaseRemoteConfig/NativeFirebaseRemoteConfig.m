@@ -17,7 +17,7 @@ RCT_ENUM_CONVERTER(
                       @"VALUE_SOURCE_STATIC" : @(FIRRemoteConfigSourceStatic)
                       }),
                    FIRRemoteConfigSourceDefault,
-                   integerValue
+                   stringValue
                    )
 @end
 
@@ -82,6 +82,10 @@ RCT_EXPORT_MODULE(FirebaseRemoteConfig);
 
 - (NSDictionary *)toJSON: (nullable FIRRemoteConfigValue *)options
 {
+    BOOL boolValue = false;
+    double doubleValue = 0.0;
+    long longValue = 0;
+    NSString *stringValue = @"";
     NSString *dataValue = @"";
     NSNumber *source;
     switch(options.source) {
@@ -101,13 +105,26 @@ RCT_EXPORT_MODULE(FirebaseRemoteConfig);
         dataValue = [NSString stringWithUTF8String:[options.dataValue bytes]];
     }
     
+    if (options.stringValue != nil) {
+        stringValue = options.stringValue;
+    }
+
+    if (options.numberValue != nil) {
+        doubleValue = options.numberValue.doubleValue;
+        longValue = options.numberValue.longValue;
+    }
+    
+    if (options.boolValue != nil) {
+        boolValue = options.boolValue;
+    }
+    
     NSDictionary *json = @{
                            @"byteArray": dataValue,
-                           @"long": options.numberValue,
-                           @"string": options.stringValue,
+                           @"long": @(longValue),
+                           @"string": stringValue,
                            @"source": source,
-                           @"boolean": @(options.boolValue),
-                           @"double": options.numberValue
+                           @"boolean": @(boolValue),
+                           @"double": @(doubleValue)
                            };
     
     return json;
@@ -176,7 +193,7 @@ RCT_EXPORT_METHOD(getDouble: (nullable NSString *)key
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
     FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
-    resolve(config.numberValue);
+    resolve(@(config.numberValue.doubleValue));
 }
 
 
@@ -238,7 +255,7 @@ RCT_EXPORT_METHOD(getLong: (nullable NSString *)key
                   rejecter: (RCTPromiseRejectBlock)reject)
 {
     FIRRemoteConfigValue *config = [self getConfig:key namespace:namespace];
-    resolve(config.numberValue);
+    resolve(@(config.numberValue.longValue));
 }
 
 
