@@ -1,14 +1,7 @@
-import {NativeModules, Platform} from 'react-native';
+import {NativeModules} from 'react-native';
+import {isIOS, notSupported} from './util';
 
 const FirebaseCore = NativeModules.FirebaseCore;
-
-const is = (os) => {
-  if (Platform.OS !== os) {
-    throw new Error(`Not supported on ${Platform.OS} platform`);
-  }
-
-  return true;
-};
 
 class Builder {
   constructor(options) {
@@ -29,18 +22,28 @@ class Builder {
   }
 
   build() {
-    return new FirebaseOptions({
-      apiKey: this.apiKey,
-      applicationId: this.applicationId,
-      databaseUrl: this.databaseUrl,
-      gcmSenderId: this.gcmSenderId,
-      storageBucket: this.storageBucket,
+    const {
+      apiKey,
+      applicationId,
+      databaseUrl,
+      gcmSenderId,
+      storageBucket,
+      clientId,
+      trackingId,
+      androidClientId,
+      deepLinkURLScheme,
+    } = this;
 
-      // IOS
-      clientId: this.clientId,
-      trackingId: this.trackingId,
-      androidClientId: this.androidClientId,
-      deepLinkURLScheme: this.deepLinkURLScheme,
+    return new FirebaseOptions({
+      apiKey,
+      applicationId,
+      databaseUrl,
+      gcmSenderId,
+      storageBucket,
+      clientId,
+      trackingId,
+      androidClientId,
+      deepLinkURLScheme,
     });
   }
 
@@ -70,35 +73,45 @@ class Builder {
   }
 
   setClientId(clientId) {
-    if (is('ios')) {
+    if (isIOS) {
       this.clientId = clientId;
+      return this;
     }
-    return this;
+
+    throw notSupported;
   }
 
   setTrackingId(trackingId) {
-    if (is('ios')) {
+    if (isIOS) {
       this.trackingId = trackingId;
+      return this;
     }
-    return this;
+
+    throw notSupported;
   }
 
   setAndroidClientId(androidClientId) {
-    if (is('ios')) {
+    if (isIOS) {
       this.androidClientId = androidClientId;
+      return this;
     }
-    return this;
+
+    throw notSupported;
   }
 
   setDeepLinkURLScheme(deepLinkURLScheme) {
-    if (is('ios')) {
+    if (isIOS) {
       this.deepLinkURLScheme = deepLinkURLScheme;
+      return this;
     }
-    return this;
+
+    throw notSupported;
   }
 }
 
+
 export default class FirebaseOptions {
+
   static get Builder() {
     return Builder;
   }
@@ -112,7 +125,7 @@ export default class FirebaseOptions {
   }
 
   constructor(options) {
-    this.options = options;
+    this.options = options || {};
   }
 
   getApiKey() {
@@ -135,35 +148,44 @@ export default class FirebaseOptions {
     return this.options.storageBucket;
   }
 
-  hashCode() {
+  getClientId() {
+    if (isIOS) {
+      return this.options.clientId;
+    }
+
+    throw notSupported;
+  }
+
+  getTrackingId() {
+    if (isIOS) {
+      return this.options.trackingId;
+    }
+
+    throw notSupported;
+  }
+
+  getAndroidClientId() {
+    if (isIOS) {
+      return this.options.androidClientId;
+    }
+
+    throw notSupported;
+  }
+
+  getDeepLinkURLScheme() {
+    if (isIOS) {
+      return this.options.deepLinkURLScheme;
+    }
+
+    throw notSupported;
+  }
+
+  get settings() {
+    return this.options;
   }
 
   toString() {
     return JSON.stringify(this.options);
-  }
-
-  getClientId() {
-    if (is('ios')) {
-      return this.options.clientId;
-    }
-  }
-
-  getTrackingId() {
-    if (is('ios')) {
-      return this.options.trackingId;
-    }
-  }
-
-  getAndroidClientId() {
-    if (is('ios')) {
-      return this.options.androidClientId;
-    }
-  }
-
-  getDeepLinkURLScheme() {
-    if (is('ios')) {
-      return this.options.deepLinkURLScheme;
-    }
   }
 }
 
