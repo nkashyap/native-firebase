@@ -45,6 +45,6 @@ allprojects {
 dependencies {
     compile project(':native-firebase-helpers')
     compile 'com.facebook.react:react-native:0.41.2'
-    compile 'com.google.firebase:firebase-appindexing:10.2.0'
+    compile 'com.google.firebase:firebase-appindexing:10.0.1'
 }
 

@@ -120,10 +120,10 @@ RCT_EXPORT_MODULE(FirebaseRemoteConfig);
     
     NSDictionary *json = @{
                            @"byteArray": dataValue,
-                           @"long": @(longValue),
                            @"string": stringValue,
                            @"source": source,
                            @"boolean": @(boolValue),
+                           @"long": @(longValue),
                            @"double": @(doubleValue)
                            };
     

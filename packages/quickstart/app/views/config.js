@@ -48,6 +48,9 @@ export default class ConfigView extends Component {
         case 'fetch()':
           response = await FirebaseRemoteConfig.fetch(0);
           break;
+        case 'activateFetched()':
+          response = await FirebaseRemoteConfig.activateFetched();
+          break;
         case 'getBoolean()':
           response = await FirebaseRemoteConfig.getBoolean('app_boolean');
           break;
@@ -75,13 +78,17 @@ export default class ConfigView extends Component {
           response = value.toJSON();
           break;
         case 'setConfigSettings()':
-          response = await FirebaseRemoteConfig.setConfigSettings(true);
+          FirebaseRemoteConfig.setConfigSettings();
+          value = await FirebaseRemoteConfig.getInfo();
+          response = value.getConfigSettings().isDeveloperModeEnabled();
           break;
         case 'setDefaults()':
-          response = await FirebaseRemoteConfig.setDefaults();
+          FirebaseRemoteConfig.setDefaults({ 'app_author': 'quickstart' });
+          response = await FirebaseRemoteConfig.getString('app_author');
           break;
         case 'setDefaultsFromFile()':
-          response = await FirebaseRemoteConfig.setDefaultsFromFile('config');
+          FirebaseRemoteConfig.setDefaultsFromFile('config');
+          response = await FirebaseRemoteConfig.getString('app_author');
           break;
         case 'getByKey()':
           value = await FirebaseRemoteConfig.getByKey('app_author');
@@ -110,6 +117,7 @@ export default class ConfigView extends Component {
 
         {Renderer.label('Static Methods')}
         {Renderer.method('fetch()', this.onPress)}
+        {Renderer.method('activateFetched()', this.onPress)}
 
         {Renderer.method('getBoolean()', this.onPress)}
         {Renderer.method('getByteArray()', this.onPress)}

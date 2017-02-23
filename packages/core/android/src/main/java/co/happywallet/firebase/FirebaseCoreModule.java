@@ -181,12 +181,7 @@ public class FirebaseCoreModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAutomaticResourceManagementEnabled(Boolean enabled, final String name, final Promise promise) {
-      try {
+    public void setAutomaticResourceManagementEnabled(Boolean enabled, final String name) {
         this.getInstance(name).setAutomaticResourceManagementEnabled(enabled);
-        promise.resolve(true);
-      } catch (IllegalStateException ex) {
-        promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
-      }
     }
 }

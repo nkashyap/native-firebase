@@ -74,17 +74,18 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void activateFetched(final Promise promise) {
+        promise.resolve(FirebaseRemoteConfig.getInstance().activateFetched());
+    }
+
+    @ReactMethod
     public void fetch(final Integer cacheExpirationSeconds, final Promise promise) {
         try {
             Task fetchTask = FirebaseRemoteConfig.getInstance().fetch(cacheExpirationSeconds.longValue());
             fetchTask.addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        promise.resolve(FirebaseRemoteConfig.getInstance().activateFetched());
-                    } else {
-                        promise.reject("FetchError", "Failed to complete fetch task successfully");
-                    }
+                    promise.resolve(task.isSuccessful());
                 }
             });
         } catch (IllegalStateException ex) {
@@ -212,57 +213,41 @@ public class FirebaseRemoteConfigModule extends ReactContextBaseJavaModule {
         }
     }
 
+
     @ReactMethod
-    public void setConfigSettings(Boolean developerModeEnabled, Promise promise) {
-        try {
-            FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-            FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                    .setDeveloperModeEnabled(developerModeEnabled)
-                    .build();
-            instance.setConfigSettings(configSettings);
-            promise.resolve(instance.getInfo().getConfigSettings().isDeveloperModeEnabled());
-        } catch (IllegalStateException ex) {
-            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+    public void setConfigSettings(Boolean developerModeEnabled) {
+        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(developerModeEnabled)
+                .build();
+        instance.setConfigSettings(configSettings);
+    }
+
+    @ReactMethod
+    public void setDefaults(ReadableMap defaults, String namespace) {
+        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+        Map<String, Object> defaultSettings = ReactNativeHelper.recursivelyDeconstructReadableMap(defaults);
+
+        if (StringHelper.isEmpty(namespace)) {
+            instance.setDefaults(defaultSettings);
+        } else {
+            instance.setDefaults(defaultSettings, namespace);
         }
     }
 
     @ReactMethod
-    public void setDefaults(ReadableMap defaults, String namespace, Promise promise) {
-        try {
-            FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-            Map<String, Object> defaultSettings = ReactNativeHelper.recursivelyDeconstructReadableMap(defaults);
+    public void setDefaultsFromFile(String filename, String namespace) {
+        String packageName = this.getReactApplicationContext().getPackageName();
+        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+        int resourceId = this
+                .getReactApplicationContext()
+                .getResources()
+                .getIdentifier(filename, "xml", packageName);
 
-            if (StringHelper.isEmpty(namespace)) {
-                instance.setDefaults(defaultSettings);
-            } else {
-                instance.setDefaults(defaultSettings, namespace);
-            }
-
-            promise.resolve(true);
-        } catch (IllegalStateException ex) {
-            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
-        }
-    }
-
-    @ReactMethod
-    public void setDefaultsFromFile(String filename, String namespace, Promise promise) {
-        try {
-            String packageName = this.getReactApplicationContext().getPackageName();
-            FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
-            int resourceId = this
-                    .getReactApplicationContext()
-                    .getResources()
-                    .getIdentifier(filename, "xml", packageName);
-
-            if (StringHelper.isEmpty(namespace)) {
-                instance.setDefaults(resourceId);
-            } else {
-                instance.setDefaults(resourceId, namespace);
-            }
-
-            promise.resolve(true);
-        } catch (IllegalStateException ex) {
-            promise.reject("IllegalStateException", ex.getLocalizedMessage(), ex);
+        if (StringHelper.isEmpty(namespace)) {
+            instance.setDefaults(resourceId);
+        } else {
+            instance.setDefaults(resourceId, namespace);
         }
     }
 }

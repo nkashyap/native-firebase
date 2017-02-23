@@ -1,35 +1,40 @@
 import {NativeModules, Platform} from 'react-native';
+import FirebaseOptions from './options';
 
 const FirebaseCore = NativeModules.FirebaseCore;
 
-export default class Firebase {
+const is = (os) => {
+  if (Platform.OS !== os) {
+    throw new Error(`Not supported on ${Platform.OS} platform`);
+  }
+
+  return true;
+};
+
+// export FirebaseOptions;
+export default class FirebaseApp {
   static get DEFAULT_APP_NAME() {
     return FirebaseCore.DEFAULT_APP_NAME;
   }
 
-  constructor(name = null, options = {}) {
-    this.name = name || FirebaseCore.DEFAULT_APP_NAME;
-    this.options = options;
-
-    Firebase
-      .initializeApp(options, this.name)
-      .then((response) => {
-        if (response) {
-          this.options = Object.assign({}, this.options, response);
-        }
-      });
-  }
-
   static async getApps() {
-    return await FirebaseCore.getApps();
+    const apps = await FirebaseCore.getApps();
+
+    return apps.map((name) => new FirebaseApp(name));
   }
 
   static async getInstance(name = null) {
-    return await FirebaseCore.getInstance(name);
+    await FirebaseCore.getInstance(name);
+    return new FirebaseApp(name);
   }
 
-  static async initializeApp(settings = {}, name = null) {
-    return await FirebaseCore.initializeApp(settings, name);
+  static async initializeApp(options = new FirebaseOptions(), name = null) {
+    await FirebaseCore.initializeApp(options.toString(), name);
+    return new FirebaseApp(name);
+  }
+
+  constructor(name = null) {
+    this.name = name || FirebaseCore.DEFAULT_APP_NAME;
   }
 
   async getName() {
@@ -37,33 +42,30 @@ export default class Firebase {
   }
 
   async getOptions() {
-    return await FirebaseCore.getOptions(this.name);
+    const options = await FirebaseCore.getOptions(this.name);
+
+    return FirebaseOptions.Builder(options).build();
   }
 
   // Android Only
   async hashCode() {
-    if (Platform.OS === 'android') {
+    if (is('android')) {
       return await FirebaseCore.hashCode(this.name);
-    } else {
-      return `Not supported on ${Platform.OS} platform`;
     }
   }
 
   // Android Only
-  async setAutomaticResourceManagementEnabled(enabled = false) {
-    if (Platform.OS === 'android') {
-      return await FirebaseCore.setAutomaticResourceManagementEnabled(enabled, this.name);
-    } else {
-      return `Not supported on ${Platform.OS} platform`;
+  setAutomaticResourceManagementEnabled(enabled = false) {
+    if (is('android')) {
+      FirebaseCore.setAutomaticResourceManagementEnabled(enabled, this.name);
     }
   }
 
+
   // IOS only
   // deleteApp() {
-  //   if (Platform.OS === 'ios') {
+  //   if (is('ios')) {
   //     return await FirebaseCore.deleteApp(this.name);
-  //   } else {
-  //     return `Not supported on ${Platform.OS} platform`;
   //   }
   // }
 };
